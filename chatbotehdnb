@@ -66,12 +66,12 @@ function djAdvanceEvent(data){
     setTimeout(function(){ botMethods.djAdvanceEvent(data); }, 500);
 }
 
-API.on(API.USER_JOIN, UserJoin);
+/*API.on(API.USER_JOIN, UserJoin);
 function UserJoin(user)
 {
 API.sendChat("@" + user.username + " Bem-vindo / Welcome!");
 }
-
+*/
 
 botMethods.skip = function(){
     setTimeout(function(){
