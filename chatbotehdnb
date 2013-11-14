@@ -15,7 +15,7 @@ toSave.ruleSkip = ruleSkip;
 mubBot.misc.Rules = "Tempo máximo 6 minutos e 30 segundos. Respeitar os moderadores e os demais players da sala. Sem Flood no chat. Sem vídeos de zoação. Não fique pedindo cargos. Não mendigue fãs. Não divulgue links de outras salas. Não toque músicas repetidas, verifique o historico.";
 mubBot.misc.Rules2 = "Maximum time 6 minutes and 30 seconds. Respect the moderators and other players in the room. No Flood the chat. No videos troll. Do not be asking positions. NO FAN4FAN. Do not disclose links from other rooms. Do not touch music again, check the dj history.";
 mubBot.misc.Commands = "Nops!"
-mubBot.misc.Themes = " Electro, Hardstyle, Dubstep, Trap, DnB, RnB, Hip-Hop, Trance, Techno.";
+mubBot.misc.Themes = " Electro, Hardstyle, Dubstep, Trap, DnB, Trance, Techno, RnB, Hip-Hop.";
 mubBot.misc.help = "Nops!" //What Help will say
 mubBot.misc.version = "1.0.7";
 mubBot.misc.origin = "Este bot foi criado por Dubstepers, Alexander7370, e Foxdemon143, editado por !Super Matt  Todos os direitos reservados!";
@@ -274,7 +274,7 @@ botMethods.djAdvanceEvent = function(data){
                         }
                         break;
 
-                    case "fb":
+                    case "nadacaraioiewogiwe":
                         if(typeof command[1] == "undefined"){
                             API.sendChat("Entre em nosso Grupo  - Grupo: https://www.facebook.com/groups/243596829136963/");
                         }else if(command[1].indexOf("@") > -1){
@@ -460,13 +460,15 @@ botMethods.djAdvanceEvent = function(data){
                         botMethods.save();
                         break;
                     case "regras":
-                        API.sendChat("Regras: " + mubBot.misc.Rules);
+                        API.sendChat("Regras: " + mubBot.misc.Rules); //
                     break
 
                     case "rules":
                         API.sendChat("Rules: " + mubBot.misc.Rules2);
                     break
-
+                    case "fb":
+                        API.sendChat("Entre em nosso Grupo no Facebook: https://www.facebook.com/groups/243596829136963/ ");
+                    break
                     case "temas":
                     case "tema":
                         API.sendChat("Temas/Themes: " + mubBot.misc.Themes);
