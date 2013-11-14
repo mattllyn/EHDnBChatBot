@@ -462,11 +462,11 @@ botMethods.djAdvanceEvent = function(data){
                     case "regras":
                         API.sendChat("Regras: " + mubBot.misc.Rules);
                     break
-                    
+
                     case "rules":
                         API.sendChat("Rules: " + mubBot.misc.Rules2);
                     break
-                    
+
                     case "temas":
                     case "tema":
                         API.sendChat("Temas/Themes: " + mubBot.misc.Themes);
@@ -477,13 +477,13 @@ botMethods.djAdvanceEvent = function(data){
                     break
 
                     case "autowoot":
-                        API.sendChat("Use auto-woot, não perca nenhum ponto, o auto-woot dá Bacana(Woot) automaticamente. http://goo.gl/YcXZLw");
+                        API.sendChat("Clique no Link e veja um tutorial explicando como usar o Auto-woot. PT-BR > http://goo.gl/YcXZLw");
                     break
 
                     case "autowoot2":
-                        API.sendChat("Use auto-woot, do not lose any point, the auto-woot gives Woot automatically. http://goo.gl/8FyC7f");
+                        API.sendChat("Click the link and see a tutorial explaining how to use the Auto-woot. EN-US > http://goo.gl/8FyC7f");
                     break
-                    
+
                     case "commands":
                     case "command":
                         API.sendChat(mubBot.misc.Commands);
@@ -806,7 +806,6 @@ botMethods.djAdvanceEvent = function(data){
         $.getJSON('http://gdata.youtube.com/feeds/api/videos/'+data.media.cid+'?v=2&alt=jsonc&callback=?', function(json){response = json.data});
         setTimeout(function(){
             if(typeof response === 'undefined' && data.media.format != 2 && mubBot.settings.removedFilter){
-                API.sendChat('/me Este vídeo não está disponivel!!');
                 //botMethods.skip();
             }
         }, 1500);
