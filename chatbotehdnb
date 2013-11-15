@@ -51,7 +51,7 @@ mubBot.filters.swearWords = ["Filho da puta", "caralho","chupa meu pinto","Vai T
 
 mubBot.filters.racistWords = ["nigger","kike","spick","porchmonkey","camel jockey","towelhead","towel head","chink","gook","porch monkey","seu preto","nigga","macaco"];
 
-mubBot.filters.beggerWords = ["fa4fa","fan me","f4f","fan for fan","fan pls","fans please","fan please","fan 4 fan","fan back","give me fans","gimme fans","fan back", "how do i be",];
+mubBot.filters.beggerWords = ["fa4fa","fan me","virem meu fan","virem meu fa","retribui fan","f4f","fan for fan","fan pls","fans please","fan please","fan 4 fan","fan back","give me fans","gimme fans","fan back", "how do i be",];
 
 mubBot.misc.tacos = ["torta crocante","torta mexicana","torta vegetariana","torta picante","torta de carne","torta de queijo","hamburger","deliciosa torta","torta enorme"];
 
@@ -454,7 +454,7 @@ botMethods.djAdvanceEvent = function(data){
                         API.sendChat("Rules: " + mubBot.misc.Rules2);
                     break
                     case "fb":
-                        API.sendChat("Entre em nosso Grupo / Go on Group Facebook: https://www.facebook.com/groups/243596829136963/ ");
+                        API.sendChat("Entre em nosso Grupo / go on group Facebook: https://www.facebook.com/groups/243596829136963/ ");
                     break
                     case "temas":
                     case "tema":
