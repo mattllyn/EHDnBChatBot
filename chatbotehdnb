@@ -792,7 +792,7 @@ botMethods.djAdvanceEvent = function(data){
                     botMethods.skip();
                     break;
                 case '5':
-                    API.sendChat('@'+data.dj.username+' Don\'t Play songs that are in history!');
+                    API.sendChat('@'+data.dj.username+' Don\f't Play songs that are in history!');
                     botMethods.skip();
                     break;
                 case '6':
