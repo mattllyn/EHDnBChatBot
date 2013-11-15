@@ -260,19 +260,6 @@ botMethods.djAdvanceEvent = function(data){
                         }
                         break;
 
-                    case "aqqwgwqk":
-                        if(typeof command[1] == "undefined"){
-                            API.sendChat("Para remover os anuncios/propagandas use: http://adblockplus.org/");
-                        }else if(command[1].indexOf("@") > -1){
-                            API.sendChat(command[1]+"Para remover os anuncios/propagandas use: http://adblockplus.org/");
-                        }else{
-                            API.sendChat("Para remover os anuncios/propagandas use: http://adblockplus.org/");
-                        }
-                        if(mubBot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 1){
-                            mubBot.misc.ready = false;
-                            setTimeout(function(){ mubBot.misc.ready = true; }, mubBot.settings.cooldown * 1000);
-                        }
-                        break;
 
                     case "nadacaraioiewogiwe":
                         if(typeof command[1] == "undefined"){
@@ -478,7 +465,7 @@ botMethods.djAdvanceEvent = function(data){
                         API.sendChat(mubBot.misc.help);
                     break
 
-                    case "adblock:
+                    case "adblock":
                         API.sendChat("Use: http://adblockplus.org/");
                     break
                     
@@ -792,7 +779,7 @@ botMethods.djAdvanceEvent = function(data){
                     botMethods.skip();
                     break;
                 case '5':
-                    API.sendChat('@'+data.dj.username+' Don\f't Play songs that are in history!');
+                    API.sendChat('@'+data.dj.username+' Don\'t Play songs that are in history!');
                     botMethods.skip();
                     break;
                 case '6':
