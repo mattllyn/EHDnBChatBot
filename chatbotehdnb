@@ -454,7 +454,7 @@ botMethods.djAdvanceEvent = function(data){
                         API.sendChat("Rules: " + mubBot.misc.Rules2);
                     break
                     case "fb":
-                        API.sendChat("Entre em nosso Grupo no Facebook: https://www.facebook.com/groups/243596829136963/ ");
+                        API.sendChat("Entre em nosso Grupo / Go on Group Facebook: https://www.facebook.com/groups/243596829136963/ ");
                     break
                     case "temas":
                     case "tema":
