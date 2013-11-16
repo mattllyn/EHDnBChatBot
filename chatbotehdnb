@@ -12,8 +12,8 @@ toSave.settings = mubBot.settings;
 toSave.moderators = mubBot.moderators;
 toSave.ruleSkip = ruleSkip;
 
-mubBot.misc.Rules = "Tempo máximo 6 minutos e 30 segundos. Respeitar os moderadores e os demais players da sala. Sem Flood no chat. Sem vídeos de zoação. Não fique pedindo cargos. Não mendigue fãs. Não divulgue links de outras salas. Não toque músicas repetidas, verifique o historico. Não toque músicas do SoundCloud.";
-mubBot.misc.Rules2 = "Maximum time 6 minutes and 30 seconds. Respect the moderators and other players in the room. No Flood the chat. No videos troll. Do not be asking positions. NO FAN4FAN. Do not disclose links from other rooms. Do not touch music again, check the dj history. Don't play songs of soundcloud";
+mubBot.misc.Rules = "Tempo máximo 6 minutos e 30 segundos. Respeitar os moderadores e os demais players da sala. Sem Flood no chat. Sem vídeos de zoação. Não fique pedindo cargos. Não mendigue fãs. Não divulgue links de outras salas. Não toque músicas repetidas, verifique o historico.";
+mubBot.misc.Rules2 = "Maximum time 6 minutes and 30 seconds. Respect the moderators and other players in the room. No Flood the chat. No videos troll. Do not be asking positions. NO FAN4FAN. Do not disclose links from other rooms. Do not touch music again, check the dj history.";
 mubBot.misc.Commands = "Nops!"
 mubBot.misc.Themes = " Electro, Hardstyle, Dubstep, Trap, DnB, Trance, Techno.";
 mubBot.misc.help = "Nops!" //What Help will say
@@ -637,7 +637,7 @@ botMethods.djAdvanceEvent = function(data){
                         API.sendChat('Não toque músicas repetidas. Do not touch music again. Check the dj history');
                         break;
                     default:
-                        API.sendChat('Não toque músicas do Soundcloud. Don't play songs of soundcloud.');
+                        API.sendChat('.');
                         break;
                 }
             }
