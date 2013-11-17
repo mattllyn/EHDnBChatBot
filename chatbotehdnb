@@ -470,11 +470,7 @@ botMethods.djAdvanceEvent = function(data){
                     break
                     
                     case "autowoot":
-                        API.sendChat("Clique no Link e veja um tutorial explicando como usar o Auto-woot. PT-BR > http://goo.gl/YcXZLw");
-                    break
-
-                    case "autowoot2":
-                        API.sendChat("Click the link and see a tutorial explaining how to use the Auto-woot. EN-US > http://goo.gl/8FyC7f");
+                        API.sendChat("Video > http://youtu.be/2d5ApIHKvYY (pls 720p). Em texto PT-BR > http://goo.gl/YcXZLw .Text tutorial EN-US > http://goo.gl/YcXZLw");
                     break
 
                     case "commands":
