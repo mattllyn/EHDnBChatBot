@@ -454,7 +454,7 @@ botMethods.djAdvanceEvent = function(data){
                         API.sendChat("Rules: " + mubBot.misc.Rules2);
                     break
                     case "fb":
-                        API.sendChat("Entre em nosso Grupo / go on group Facebook: https://www.facebook.com/groups/243596829136963/ ");
+                        API.sendChat("Entre em nosso Grupo /Join the group on facebook:: https://www.facebook.com/groups/243596829136963/ ");
                     break
                     case "temas":
                     case "tema":
@@ -470,7 +470,7 @@ botMethods.djAdvanceEvent = function(data){
                     break
                     
                     case "autowoot":
-                        API.sendChat("Video > http://youtu.be/2d5ApIHKvYY (pls 720p). Em texto PT-BR > http://goo.gl/YcXZLw .Text tutorial EN-US > http://goo.gl/YcXZLw");
+                        API.sendChat("Tutorial Auto-woot Video > http://youtu.be/2d5ApIHKvYY (pls 720p). Tutorial em texto PT-BR > http://goo.gl/YcXZLw .Text tutorial EN-US > http://goo.gl/YcXZLw");
                     break
 
                     case "commands":
