@@ -15,10 +15,10 @@ toSave.ruleSkip = ruleSkip;
 mubBot.misc.Rules = "Tempo máximo 6 minutos e 30 segundos. Respeitar os moderadores e os demais players da sala. Sem Flood no chat. Sem vídeos de zoação. Não fique pedindo cargos. Não mendigue fãs. Não divulgue links de outras salas. Não toque músicas repetidas, verifique o historico.";
 mubBot.misc.Rules2 = "Maximum time 6 minutes and 30 seconds. Respect the moderators and other players in the room. No Flood the chat. No videos troll. Do not be asking positions. NO FAN4FAN. Do not disclose links from other rooms. Do not touch music again, check the dj history.";
 mubBot.misc.Commands = "Nops!"
-mubBot.misc.Themes = " Electro, Hardstyle, Dubstep, Trap, DnB, Trance, Techno.";
+mubBot.misc.Themes = "Kpop, Jmusic, Vocaloid, Kmusic, JRock, Cultura Oriental, AMV, Cosplay, G. M., Niconico Dancers e Electro Anime Music.";
 mubBot.misc.help = "Nops!" //What Help will say
 mubBot.misc.version = "1.0.7";
-mubBot.misc.origin = "Este bot foi criado por Dubstepers, Alexander7370, e Foxdemon143, editado por !Super Matt  Todos os direitos reservados!";
+mubBot.misc.origin = "Este bot foi criado por Dubstepers, Alexander7370, e Foxdemon143, editado por -Psyko-Mattz  Todos os direitos reservados!";
 mubBot.misc.changelog = "Adicionado uma verificação secundária para o histórico";
 mubBot.misc.ready = true;
 mubBot.misc.lockSkipping = false;
@@ -66,12 +66,12 @@ function djAdvanceEvent(data){
     setTimeout(function(){ botMethods.djAdvanceEvent(data); }, 500);
 }
 
-/*API.on(API.USER_JOIN, UserJoin);
+API.on(API.USER_JOIN, UserJoin);
 function UserJoin(user)
 {
-API.sendChat("@" + user.username + " Bem-vindo / Welcome!");
+API.sendChat("@" + user.username + " Bem-vindo siga as !regras e divirta-se! / Welcome follow the !rules and enjoy!");
 }
-*/
+
 
 botMethods.skip = function(){
     setTimeout(function(){
@@ -156,6 +156,209 @@ botMethods.djAdvanceEvent = function(data){
     }
 };
 
+API.on(API.CHAT, function(data){
+        if(data.message.indexOf('!') === 0){
+            var msg = data.message, from = data.from, fromID = data.fromID;
+            var command = msg.substring(1).split(' ');
+            if(typeof command[2] != "undefined"){
+                for(var i = 2; i<command.length; i++){
+                    command[1] = command[1] + ' ' + command[i];
+                }
+            }
+            if(mubBot.misc.ready || mubBot.admins.indexOf(fromID) > -1 ||API.getUser(fromID).permission > 1){
+                switch(command[0].toLowerCase()){
+                    case "taco":
+                        if(typeof command[1].indexOf("@") === 0){
+                            var crowd = API.getUsers();
+                            var randomUser = Math.floor(Math.random() * crowd.length);
+                            var randomTaco = Math.floor(Math.random() * mubBot.misc.tacos.length);
+                            var randomSentence = Math.floor(Math.random() * 3);
+                            switch(randomSentence){
+                                case 0:
+                                    API.sendChat("@" + crowd[randomUser].username + ", toma esse(a) " + mubBot.misc.tacos[randomTaco] + ", sua vadia!");
+                                    break;
+                                case 1:
+                                    API.sendChat("@" + crowd[randomUser].username + ", rápido! Coma esse(a) " + mubBot.misc.tacos[randomTaco] + " antes que eu coma!");
+                                    break;
+                                case 2:
+                                    API.sendChat("Um(a) " + mubBot.misc.tacos[randomTaco] + " para voce, @" + crowd[randomUser].username + ". :3");
+                                    break;
+                                case 3:
+                                    API.sendChat("/me lança um(a) " + mubBot.misc.tacos[randomTaco] + " em @" + crowd[randomUser].username + "!");
+                                    break;
+                                default:
+                                    API.sendChat('Who the hell is that?');
+                                    break;
+                            }
+                        }else{
+                            if(command[1].indexOf("@") === 0) command[1] = command[1].substring(1);
+                            var randomTaco = Math.floor(Math.random() * mubBot.misc.tacos.length);
+                            var randomSentence = Math.floor(Math.random() * 3);
+                            switch(randomSentence){
+                                case 0:
+                                    API.sendChat("@" + botMethods.cleanString(command[1]) + ", toma esse(a) " + mubBot.misc.tacos[randomTaco] + ", sua vadia!");
+                                    break;
+                                case 1:
+                                    API.sendChat("@" + botMethods.cleanString(command[1]) + ", rápido! Coma esse(a) " + mubBot.misc.tacos[randomTaco] + " antes que eu coma!");
+                                    break;
+                                case 2:
+                                    API.sendChat("Um(a) " + mubBot.misc.tacos[randomTaco] + " para voce, @" + botMethods.cleanString(command[1]) + ". :3");
+                                    break;
+                                case 3:
+                                    API.sendChat("/me lança uma " + mubBot.misc.tacos[randomTaco] + " em @" + botMethods.cleanString(command[1]) + "!");
+                                    break;
+                                default:
+                                    API.sendChat('Who the hell is that?');
+                                    break;
+                            }
+                        }
+                        if(mubBot.admins.indexOf(fromID) > -1 || API.getUser(fromID).permission < 1){
+                            mubBot.misc.ready = false;
+                            setTimeout(function(){ mubBot.misc.ready = true; }, mubBot.settings.cooldown * 1000);
+                        }
+                        break;
+                    case "abraço":
+                        if(typeof command[1].indexOf("@") === 0){
+                            var crowd = API.getUsers();
+                            var randomUser = Math.floor(Math.random() * crowd.length);
+                            var randomSentence = Math.floor(Math.random() * 3);
+                            switch(randomSentence){
+                                case 0:
+                                    //API.sendChat("Abraços? Esqueça isso!");
+                                    setTimeout(function(){
+                                        API.sendChat("/me agarra a bunda de @"+crowd[randomUser].username+"!");
+                                    }, 650);
+                                    break;
+                                case 1:
+                                    API.sendChat("/me dá um grande abraço de urso em @"+crowd[randomUser].username+"!");
+                                    break;
+                                case 2:
+                                    API.sendChat("/me gives @"+crowd[randomUser].username+" a soft, furry hug");
+                                    break;
+                                case 3:
+                                    API.sendChat("/me dá um abraço estranho em @"+crowd[randomUser].username+"!");
+                                    break;
+                                default:
+                                    API.sendChat('Que diabos é isso?');
+                                    break;
+                            }
+                        }else{
+                            if(command[1].indexOf("@") === 0) command[1] = command[1].substring(1);
+                            var crowd = API.getUsers();
+                            var randomUser = Math.floor(Math.random() * crowd.length);
+                            var randomSentence = Math.floor(Math.random() * 3);
+                            switch(randomSentence){
+                                case 0:
+                                    //API.sendChat("Abraços? Esqueça isso!");
+                                    setTimeout(function(){
+                                        API.sendChat("/me agarra a bunda de @"+botMethods.cleanString(command[1])+"!");
+                                    }, 650);
+                                    break;
+                                case 1:
+                                    API.sendChat("/me dá um grande abraço de urso em @"+botMethods.cleanString(command[1])+"!");
+                                    break;
+                                case 2:
+                                    API.sendChat("/me dá um abraço macio em @"+botMethods.cleanString(command[1])+"!");
+                                    break;
+                                case 3:
+                                    API.sendChat("/me dá um abraço estranho em @"+botMethods.cleanString(command[1])+"!");
+                                    break;
+                                default:
+                                    API.sendChat('Que diabos é isso?');
+                                    break;
+                            }
+                        }
+                        if(mubBot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 1){
+                            mubBot.misc.ready = false;
+                            setTimeout(function(){ mubBot.misc.ready = true; }, mubBot.settings.cooldown * 1000);
+                        }
+                        break;
+                    case "punir":
+                        if(typeof command[1].indexOf("@") === 0){
+                            var crowd = API.getUsers();
+                            var randomUser = Math.floor(Math.random() * crowd.length);
+                            var randomSentence = Math.floor(Math.random() * 3);
+                            switch(randomSentence){
+                                case 0:
+                                    API.sendChat("/me esfrega uma lixa no escroto do @"+crowd[randomUser].username+"!");
+                                    break;
+                                case 1:
+                                    API.sendChat("/me cutuca os olhos de @"+crowd[randomUser].username+"!");
+                                    break;
+                                case 2:
+                                    API.sendChat("/me joga arreia nos olhos de @"+crowd[randomUser].username+"!");
+                                    break;
+                                case 3:
+                                    API.sendChat("/me faz a mãe de @"+crowd[randomUser].username+" chorar!");
+                                    break;
+                                case 4:
+                                    API.sendChat("/me penetra @"+crowd[randomUser].username+" com uma caneta!");
+                                    break;
+                                case 5:
+                                    API.sendChat("/me aperta os mamilos de @"+crowd[randomUser].username+"!");
+                                    break;
+                                case 6:
+                                    API.sendChat("/me deixa @"+crowd[randomUser].username+" todo molhadinho(a)!");
+                                    break;
+                                case 7:
+                                    API.sendChat("/me taca fogo no cabelo de @"+crowd[randomUser].username+"!");
+                                    break;
+                                default:
+                                    API.sendChat('Que diabos é isso?');
+                                    break;
+                            }
+                        }else{
+                            if(command[1].indexOf("@") === 0) command[1] = command[1].substring(1);
+                            var randomSentence = Math.floor(Math.random() * 3);
+                            switch(randomSentence){
+                                case 0:
+                                    API.sendChat("/me esfrega uma lixa no escroto do @"+botMethods.cleanString(command[1])+"'!");
+                                    break;
+                                case 1:
+                                    API.sendChat("/me cutuca os olhos de @"+botMethods.cleanString(command[1])+"!");
+                                    break;
+                                case 2:
+                                    API.sendChat("/me joga arreia nos olhos de @"+botMethods.cleanString(command[1])+"!");
+                                    break;
+                                case 3:
+                                    API.sendChat("/me faz a mãe de @"+botMethods.cleanString(command[1])+" chorar!");
+                                    break;
+                                case 4:
+                                    API.sendChat("/me penetra @"+botMethods.cleanString(command[1])+" com uma caneta!");
+                                    break;
+                                case 5:
+                                    API.sendChat("/me aperta os mamilos de @"+botMethods.cleanString(command[1])+"!");
+                                    break;
+                                case 6:
+                                    API.sendChat("/me deixa @"+botMethods.cleanString(command[1])+" todo molhadinho(a)!");
+                                    break;
+                                case 7:
+                                    API.sendChat("/me tava fogo no cabelo de @"+botMethods.cleanString(command[1])+"!");
+                                    break;
+                                default:
+                                    API.sendChat('Que diabos é isso?');
+                                    break;
+                            }
+                        }
+                        if(mubBot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 1){
+                            mubBot.misc.ready = false;
+                            setTimeout(function(){ mubBot.misc.ready = true; }, mubBot.settings.cooldown * 1000);
+                        }
+                        break;
+
+                    case "run":
+                        if(mubBot.admins.indexOf(fromID) > -1){
+                            a = botMethods.cleanString(command[1]);
+                            console.log(a);
+                            eval(a);
+                        }
+                        break;
+
+                }
+            }
+        }
+    });
+    
     API.on(API.CHAT, function(data){
         if(data.message.indexOf('!') === 0){
             var msg = data.message, from = data.from, fromID = data.fromID;
@@ -454,7 +657,7 @@ botMethods.djAdvanceEvent = function(data){
                         API.sendChat("Rules: " + mubBot.misc.Rules2);
                     break
                     case "fb":
-                        API.sendChat("Entre em nosso Grupo /Join the group on facebook:: https://www.facebook.com/groups/243596829136963/ ");
+                        API.sendChat("Entre em nosso Grupo /Join the group on facebook: https://www.facebook.com/groups/244984908992691/ ");
                     break
                     case "temas":
                     case "tema":
@@ -468,7 +671,7 @@ botMethods.djAdvanceEvent = function(data){
                     case "adblock":
                         API.sendChat("Use: http://adblockplus.org/");
                     break
-                    
+
                     case "autowoot":
                         API.sendChat("Tutorial Auto-woot Video > http://youtu.be/2d5ApIHKvYY (pls 720p). Tutorial em texto PT-BR > http://goo.gl/YcXZLw .Text tutorial EN-US > http://goo.gl/YcXZLw");
                     break
@@ -479,7 +682,7 @@ botMethods.djAdvanceEvent = function(data){
                     break
 
                     case "version":
-                        API.sendChat("EHDnB Bot version " + mubBot.misc.version);
+                        API.sendChat("AKJ-BR ChatBot version " + mubBot.misc.version);
                         if(mubBot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 1){
                             mubBot.misc.ready = false;
                             setTimeout(function(){ mubBot.misc.ready = true; }, mubBot.settings.cooldown * 1000);
@@ -804,7 +1007,7 @@ botMethods.djAdvanceEvent = function(data){
 
 
     botMethods.loadStorage();
-    console.log("Iniciado EHDnB Script version " + mubBot.misc.version);
+    console.log("Iniciado AKJ-BR ChatBot. version " + mubBot.misc.version);
 
     setTimeout(function(){
         $.getScript('');
@@ -812,8 +1015,8 @@ botMethods.djAdvanceEvent = function(data){
 
     setTimeout(function(){
         SC.initialize({
-            client_id: 'eae62c8e7a30564e9831b9e43f1d484a'
+            client_id: 'ee62c8e7a30564e9831b9e43f1d484a'
         });
     }, 3000);
 
-    API.sendChat('/me : EHDnB ChatBot Script Iniciado v'+mubBot.misc.version)
+    API.sendChat('/me  AKJ-BR ChatBot Iniciado v'+mubBot.misc.version)
