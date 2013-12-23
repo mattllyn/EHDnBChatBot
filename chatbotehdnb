@@ -358,7 +358,7 @@ API.on(API.CHAT, function(data){
             }
         }
     });
-    
+
     API.on(API.CHAT, function(data){
         if(data.message.indexOf('!') === 0){
             var msg = data.message, from = data.from, fromID = data.fromID;
@@ -657,7 +657,7 @@ API.on(API.CHAT, function(data){
                         API.sendChat("Rules: " + mubBot.misc.Rules2);
                     break
                     case "fb":
-                        API.sendChat("Entre em nosso Grupo /Join the group on facebook: https://www.facebook.com/groups/244984908992691/ ");
+                        API.sendChat("Curta a página no Facebook /Like the page on facebook: https://www.facebook.com/pages/Anime-Music-Music-Music/560101824082085 ");
                     break
                     case "temas":
                     case "tema":
@@ -1007,7 +1007,7 @@ API.on(API.CHAT, function(data){
 
 
     botMethods.loadStorage();
-    console.log("Iniciado AKJ-BR ChatBot. version " + mubBot.misc.version);
+    console.log("Iniciado AMusic ChatBot. version " + mubBot.misc.version);
 
     setTimeout(function(){
         $.getScript('');
@@ -1019,4 +1019,4 @@ API.on(API.CHAT, function(data){
         });
     }, 3000);
 
-    API.sendChat('/me  AKJ-BR ChatBot Iniciado v'+mubBot.misc.version)
+    API.sendChat('/me  AMusic ChatBot Iniciado v'+mubBot.misc.version)
