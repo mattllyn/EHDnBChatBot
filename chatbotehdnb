@@ -815,7 +815,7 @@ API.on(API.CHAT, function(data){
             if(mubBot.misc.ready || mubBot.admins.indexOf(fromID) > -1 ||API.getUser(fromID).permission > 1){
                 switch(command[1]){
                     case '1':
-                        API.sendChat('Tempo máximo 6 minutos e 30 segundos. Maximum time 6 minutes and 30 seconds.');
+                        API.sendChat('Tempo máximo 6 minutos e 30 segundos, Rock no máximo 10 minutos. Maximum time 6 minutes and 30 seconds, genre Rock maximum time 10 minutes.');
                         break;
                     case '2':
                         API.sendChat('Não peça cargos. Do not be asking positions');
