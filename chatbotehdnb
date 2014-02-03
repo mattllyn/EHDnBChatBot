@@ -1,1023 +1,1664 @@
-var mubBot = {};
+/*
+   Copyright (c) 2014 - 2017 by Tawi Jordan - ???ÐJ - ???? - TFL
+
+   Permission to use this software for any purpose without fee is hereby granted, provided
+   that the above copyright notice and this permission notice appear in all copies.
+
+   Permission to copy and/or edit this software or parts of it for any purpose is permitted,
+   provided that the following points are followed.
+   - The above copyright notice and this permission notice appear in all copies
+   - Within two (2) days after modification is proven working, any modifications are send back
+   to the original authors to be inspected with the goal of inclusion in the official software
+   - Any edited version are only test versions and not permitted to be run as a final product
+   - Any edited version aren't to be distributed
+   - Any edited version have the prerelease version set to something that can be distinguished
+   from a version used in the original software
+
+
+   TERMS OF REPRODUCTION USE
+
+   Failure to follow these terms will result in me getting very angry at you
+   and having your software tweaked or removed if possible. Either way, you're
+   still an idiot for not following such a basic rule.
+   THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHORS DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE
+   INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHORS
+   BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER
+   RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+   OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+
+ * @Author:    Tawi Jordan - ???ÐJ - ???? - TFL (Member. on Plug.dj)
+ * @Author:    RogieRog (Owner. of The Country Club)
+
+
+ * [NOTE]: THERE IS NOTHING HERE FOR YOU! COPYING THIS SCRIPT AND USING "IT" or "AS"
+ * (yours without Authors permission) WELL SERIOUSLY GET YOU TO FACE THE CONSEQUENCES!
+ *
+ */
+
+var Countrybot = {};
 var ruleSkip = {};
-mubBot.misc = {};
-mubBot.settings = {};
-mubBot.moderators = {};
-mubBot.filters = {};
+Countrybot.misc = {};
+Countrybot.settings = {};
+Countrybot.moderators = {};
+Countrybot.filters = {};
 botMethods = {};
-mubBot.pubVars = {};
+Countrybot.pubVars = {};
 
 toSave = {};
-toSave.settings = mubBot.settings;
-toSave.moderators = mubBot.moderators;
-toSave.ruleSkip = ruleSkip;
+toSave.settings = Countrybot.settings;
+toSave.moderators = Countrybot.moderators;
 
-mubBot.misc.Rules = "Tempo máximo 6 minutos e 30 segundos, Rock no máximo 10 minutos. Respeitar os moderadores e os demais players da sala. Sem Flood no chat. Sem vídeos de zoação. Não fique pedindo cargos. Não mendigue fãs. Não divulgue links de outras salas. Não toque músicas repetidas, verifique o historico.";
-mubBot.misc.Rules2 = "Maximum time 6 minutes and 30 seconds, genre Rock maximum time 10 minutes.. Respect the moderators and other players in the room. No Flood the chat. No videos troll. Do not be asking positions. NO FAN4FAN. Do not disclose links from other rooms. Do not touch music again, check the dj history.";
-mubBot.misc.Commands = "Nops!"
-mubBot.misc.Themes = "Kpop, Progressive House, J music, EDM, Vocaloid, Electro, Kmusic, JRock, Hardstyle, Cultura Oriental, Drumstep, AMV, Dubstep, Cosplay, Game Music, Trap, Trance, Nico Nico Dancers, Techno, DnB, Rock.";
-mubBot.misc.help = "Nops!" //What Help will say
-mubBot.misc.version = "1.0.7";
-mubBot.misc.origin = "Este bot foi criado por Dubstepers, Alexander7370, e Foxdemon143, editado por -Psyko-Mattz  Todos os direitos reservados!";
-mubBot.misc.changelog = "Adicionado uma verificação secundária para o histórico";
-mubBot.misc.ready = true;
-mubBot.misc.lockSkipping = false;
-mubBot.misc.lockSkipped = "0";
-mubBot.misc.tacos = new Array();
+Countrybot.misc.version = "1.0.28";
+Countrybot.misc.origin = "This bot was created by RogieRog and Neon alone(edited by: Psyko-Mattz), and it is copyrighted!";
+Countrybot.misc.changelog = "Adicionado uma verificação secundária do histórico";
+Countrybot.misc.ready = true;
+Countrybot.misc.lockSkipping = false;
+Countrybot.misc.lockSkipped = "0";
+Countrybot.misc.tacos = new Array();
+
 
 joined = new Date().getTime();
 
 cancel = false;
 
-mubBot.filters.swearWords = new Array();
-mubBot.filters.racistWords = new Array();
-mubBot.filters.beggerWords = new Array();
+Countrybot.filters.swearWords = new Array();
+Countrybot.filters.commandWords = new Array();
+Countrybot.filters.racistWords = new Array();
+Countrybot.filters.beggerWords = new Array();
 
-mubBot.settings.maxLength = 6; //minutes
-mubBot.settings.cooldown = 0; //seconds
-mubBot.settings.staffMeansAccess = true;
-mubBot.settings.historyFilter = false;
-mubBot.settings.swearFilter = true;
-mubBot.settings.racismFilter = true;
-mubBot.settings.beggerFilter = true;
-mubBot.settings.interactive = true;
-mubBot.settings.ruleSkip = true;
-mubBot.settings.removedFilter = true;
+Countrybot.settings.maxLength = 10;
+Countrybot.settings.cooldown = 10;
+Countrybot.settings.staffMeansAccess = true;
+Countrybot.settings.historyFilter = true;
+Countrybot.settings.swearFilter = false;
+Countrybot.settings.commandFilter = false;
+Countrybot.settings.racismFilter = false;
+Countrybot.settings.beggerFilter = true;
+Countrybot.settings.interactive = true;
+Countrybot.settings.ruleSkip = true;
+Countrybot.settings.removedFilter = true;
 
-//Redstoner              [DJ-NEON]                  [Redstoner-bot]         [Foxdemon143]
-//mubBot.admins = ["50aeaeb6c3b97a2cb4c25bd2", "524b568f3e083e4f2be7356e", "5214f9e196fba51fda062ea7"];
 
-mubBot.filters.swearWords = ["Filho da puta", "caralho","chupa meu pinto","Vai Tomar no cu", "Vai se foder", "puta merda", "cú", "cacete", "imbecil", "bicha", "gay","idiota","vagina","Fudeu","pau","motherfucker","seu merda","pau no cu","idiota","puta"];
+Countrybot.admins =
+//       [NEON]                      [Rogie]                    [RedNeck]                   [minellium]               [Jovi]                       [Matt]
+["50aeaeb6c3b97a2cb4c25bd2","50b3dd0d3e083e26dbef9319","51c49679877b9263732212c7","5293525e96fba53bee4179e5","50b3e11a877b9228b4cf2527","515a206a877b9272821f831e"];
 
-mubBot.filters.racistWords = ["nigger","kike","spick","porchmonkey","camel jockey","towelhead","towel head","chink","gook","porch monkey","seu preto","nigga","macaco"];
+// Filtering Chat Words below
 
-mubBot.filters.beggerWords = ["fa4fa","fan me","virem meu fan","virem meu fa","retribui fan","f4f","fan for fan","fan pls","fans please","fan please","fan 4 fan","fan back","give me fans","gimme fans","fan back", "how do i be",];
+Countrybot.filters.swearWords = ["Filho da puta","viado","chupa meu pinto","Vai Tomar no cu", "Vai se foder", "puta","puto","cacete","idiota","motherfucker","seu merda","pau no cu"];
 
-mubBot.misc.tacos = ["torta crocante","torta mexicana","torta vegetariana","torta picante","torta de carne","torta de queijo","hamburger","deliciosa torta","torta enorme"];
+Countrybot.filters.commandWords = ["!say","!songlink","!comandos","!bansong 1","!down","!autowoot","!entrar","!woot","!meh","!status","!tcf","!cf","!regras","!version","!test","!cancel","!temas","!source"];
 
-mubBot.pubVars.skipOnExceed;
-mubBot.pubVars.command = false;
+Countrybot.filters.racistWords = ["nigger","seu macaco","kike","spick","porchmonkey","camel jockey","towelhead","towel head","chink","gook","porch monkey","seu preto","nigga"];
+
+Countrybot.filters.beggerWords = ["fa4fa","fan me","virem meu fan","virem meu fa","retribui fan","f4f","fan for fan","fan pls","fans please","fan please","fan 4 fan","fan back","give me fans","gimme fans","fan back", "how do i be"];
+
+// Filtering Fun Commands below
+
+Countrybot.misc.tacos = ["Cigarro","Cigarro de maconha","Marlboro","nargs","Caximbo da paz"];
+
+Countrybot.misc.cookie = ["um biscoito de chocolate","um bolinho de açúcar","um cookie de aveia passas","um brownie 'especial'","um cracker animal","um lanche Scooby","um muffin de mirtilo","um cupcake"] ;
+
+Countrybot.misc.drink = ["Caipirinha", "Wisk", "Tequila", "Champagne", "Martini", "Capeta"];
+
+
+Countrybot.pubVars.skipOnExceed;
+Countrybot.pubVars.command = false;
 
 Array.prototype.remove=function(){var c,f=arguments,d=f.length,e;while(d&&this.length){c=f[--d];while((e=this.indexOf(c))!==-1){this.splice(e,1)}}return this};
 
 API.on(API.DJ_ADVANCE, djAdvanceEvent);
 
-function djAdvanceEvent(data){
-    setTimeout(function(){ botMethods.djAdvanceEvent(data); }, 500);
+API.on(API.DJ_ADVANCE, woot);
+function woot(){
+$('#woot').click();
 }
-
 /*
 API.on(API.USER_JOIN, UserJoin);
 function UserJoin(user)
 {
-API.sendChat("@" + user.username + " Bem-vindo siga as !regras e divirta-se! / Welcome follow the !rules and enjoy!");
+  API.sendChat("Bem-vindo ao Animes Music Music @"+ user.username +" Divirta-se! Respeite as regras e os temas!");
+}
+
+API.on(API.USER_LEAVE, UserLeave);
+function UserLeave(user)
+{
+API.sendChat(user.username +" saiu da sala.");
+  //alert(user.username + " saiu da sala");
 }
 */
+API.on(API.VOTE_SKIP, SKIP);
+function SKIP() {
+  API.sendChat("Desculpe, não toque esta música de novo.");
+}
+/*
+API.on(API.CURATE_UPDATE, callback);
+function callback(obj)
+{
+  var media = API.getMedia();
+  API.sendChat(obj.user.username + " Adicionou a música!");
+}
+*/
+function djAdvanceEvent(data){
+    setTimeout(function(){ botMethods.data }, 500);
+}
 
 botMethods.skip = function(){
-    setTimeout(function(){
-        if(!cancel) API.moderateForceSkip();
-    }, 3500);
+  setTimeout(function(){
+    if(!cancel) API.moderateForceSkip();
+  }, 3500);
 };
 
 botMethods.load = function(){
-    toSave = JSON.parse(localStorage.getItem("mubBotSave"));
-    mubBot.settings = toSave.settings;
-    ruleSkip = toSave.ruleSkip;
+  toSave = JSON.parse(localStorage.getItem("CountrybotSave"));
+  Countrybot.settings = toSave.settings;
+  ruleSkip = toSave.ruleSkip;
 };
 
-botMethods.save = function(){localStorage.setItem("mubBotSave", JSON.stringify(toSave))};
+botMethods.save = function(){localStorage.setItem("CountrybotSave", JSON.stringify(toSave))};
 
 botMethods.loadStorage = function(){
-    if(localStorage.getItem("mubBotSave") !== null){
-        botMethods.load();
-    }else{
-        botMethods.save();
-    }
+  if(localStorage.getItem("CountrybotSave") !== null){
+    botMethods.load();
+  }else{
+    botMethods.save();
+  }
 };
 
 botMethods.checkHistory = function(){
-    currentlyPlaying = API.getMedia(), history = API.getHistory();
-    caught = 0;
-    for(var i = 0; i < history.length; i++){
-        if(currentlyPlaying.cid === history[i].media.cid){
-            caught++;
-        }
+  currentlyPlaying = API.getMedia(), history = API.getHistory();
+  caught = 0;
+  for(var i = 0; i < history.length; i++){
+    if(currentlyPlaying.cid === history[i].media.cid){
+      caught++;
     }
-    caught--;
-    return caught;
+  }
+  caught--;
+  return caught;
 };
 
 botMethods.getID = function(username){
-    var users = API.getUsers();
-    var result = "";
-    for(var i = 0; i < users.length; i++){
-        if(users[i].username === username){
-            result = users[i].id;
-            return result;
-        }
+  var users = API.getUsers();
+  var result = "";
+  for(var i = 0; i < users.length; i++){
+    if(users[i].username === username){
+      result = users[i].id;
+      return result;
     }
+  }
 
-    return "notFound";
+  return "notFound";
 };
 
 botMethods.cleanString = function(string){
-    return string.replace(/&#39;/g, "'").replace(/&amp;/g, "&").replace(/&#34;/g, "\"").replace(/&#59;/g, ";").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
+  return string.replace(/&#39;/g, "'").replace(/&amp;/g, "&").replace(/&#34;/g, "\"").replace(/&#59;/g, ";").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
 };
 
 botMethods.djAdvanceEvent = function(data){
-    clearTimeout(mubBot.pubVars.skipOnExceed);
-    if(mubBot.misc.lockSkipping){
-        API.moderateAddDJ(mubBot.misc.lockSkipped);
-        mubBot.misc.lockSkipped = "0";
-        mubBot.misc.lockSkipping = false;
-        setTimeout(function(){ API.moderateRoomProps(false, true); }, 500);
+  clearTimeout(Countrybot.pubVars.skipOnExceed);
+  if(Countrybot.misc.lockSkipping){
+    API.moderateAddDJ(Countrybot.misc.lockSkipped);
+    Countrybot.misc.lockSkipped = "0";
+    Countrybot.misc.lockSkipping = false;
+    setTimeout(function(){ API.moderateRoomProps(false, true); }, 500);
+  }
+  var song = API.getMedia();
+  if(botMethods.checkHistory() > 0 && Countrybot.settings.historyFilter){
+    if(API.getUser().permission < 2){
+      //API.sendChat("This song is in the history! You should make me a mod so that I could skip it!");
+    }else if(API.getUser().permission > 1){
+      //API.sendChat("@" + API.getDJ().username + ", playing songs that are in the history isn't allowed, please check next time! Skipping..");
+      //API.moderateForceSkip();
+    }else if(song.duration > Countrybot.settings.maxLength * 60){
+      Countrybot.pubVars.skipOnExceed = setTimeout( function(){
+        //API.sendChat("@"+ API.getDJ().username +" You have now played for as long as this room allows, time to let someone else have the booth!");
+        //API.moderateForceSkip();
+      }, Countrybot.settings.maxLength * 60000);
+      API.sendChat("@"+ API.getDJ().username +" Seu video será pulado " + Countrybot.settings.maxLength + " ultrapassou o tempo limite de cada video.");
+    }else{
+      setTimeout(function(){
+        if(botMethods.checkHistory() > 0 && Countrybot.settings.historyFilter){
+          //API.sendChat("@" + API.getDJ().username + ", playing songs that are in the history isn't allowed, please check next time! Skipping..");
+          //API.moderateForceSkip();
+        };
+      }, 1500);
     }
-    var song = API.getMedia();
-    if(botMethods.checkHistory() > 0 && mubBot.settings.historyFilter){
-        if(API.getUser().permission < 2){
-            API.sendChat("Esta musica está no histórico!");
-        }else if(API.getUser().permission > 1){
-            API.sendChat("@" + API.getDJs()[0].username + ", tocar músicas que estão no histórico não é permitido, por favor, verifique da próxima vez! Pulando...");
-            botMethods.skip()
-        }else if(song.duration > mubBot.settings.maxLength * 60){
-            mubBot.pubVars.skipOnExceed = setTimeout( function(){
-                API.sendChat("@"+API.getDJs()[0].username+" Você já tocou por quanto tempo esta sala permite, é hora de deixar a cabine!");
-                botMethods.skip();
-            }, mubBot.settings.maxLength * 60000);
-            //API.sendChat("@"+API.getDJs()[0].username+" This song will be skipped " + mubBot.settings.maxLength + " minutes from now because it exceeds the max song length.");
-        }else{
-            setTimeout(function(){
-                if(botMethods.checkHistory() > 0 && mubBot.settings.historyFilter){
-                    API.sendChat("@" + API.getDJs()[0].username + ", tocar músicas que estão no histórico não é permitido, por favor, verifique da próxima vez! Pulando...");
-                    botMethods.skip()
-                };
-            }, 1500);
-        }
-    }
+  }
 };
 
 API.on(API.CHAT, function(data){
-        if(data.message.indexOf('!') === 0){
-            var msg = data.message, from = data.from, fromID = data.fromID;
-            var command = msg.substring(1).split(' ');
-            if(typeof command[2] != "undefined"){
-                for(var i = 2; i<command.length; i++){
-                    command[1] = command[1] + ' ' + command[i];
+  if(data.message.indexOf('!') === 0){
+    var msg = data.message, from = data.from, fromID = data.fromID;
+    var command = msg.substring(1).split(' ');
+    if(typeof command[2] != "undefined"){
+      for(var i = 2; i<command.length; i++){
+        command[1] = command[1] + ' ' + command[i];
+      }
+    }
+    if(Countrybot.misc.ready || Countrybot.admins.indexOf(fromID) > -1 || API.getUser(data.fromID).permission > 1 || API.getStaff(data.fromID).permission > 2){
+      switch(command[0].toLowerCase()){
+
+        case "votos":
+          if(API.getUser(fromID).permission < 2 || Countrybot.admins.indexOf(fromID) > -1){
+            API.sendChat("Votos:  :+1: " + API.getRoomScore().positive + " | :purple_heart: " + API.getRoomScore().curates+" | :-1: " + API.getRoomScore().negative);
+            Countrybot.misc.ready = false;
+            setTimeout(function(){ Countrybot.misc.ready = true; }, Countrybot.settings.cooldown * 1000);
+          }
+          break;
+
+case "clear":
+if(API.getUser(data.fromID).permission > 1 || Countrybot.admins.indexOf(fromID) > -1){
+if(typeof command[1] === "undefined"){
+API.moderateDeleteChat(chatID)
+API.sendChat("Apagando Chat");
+}
+}
+break;
+        case "facebook":
+        case "fb":
+          if(API.getUser(fromID).permission < 2 || Countrybot.admins.indexOf(fromID) > -1){
+            API.sendChat(data.from +" Curta nosso facebook: http://migre.me/hG4pT | Acesse nosso blog: http://www.ammbr.com.br/");
+            Countrybot.misc.ready = false;
+            setTimeout(function(){ Countrybot.misc.ready = true; }, Countrybot.settings.cooldown * 1000);
+          }
+          break;
+
+        case "djinfo":
+          if(API.getUser(fromID).permission > 1 || Countrybot.admins.indexOf(fromID) > -1){
+            var total = API.getDJ().djPoints + API.getDJ().listenerPoints + API.getDJ().curatorPoints;
+            API.sendChat("DJ atual: "+ API.getDJ().username +". Pontos: "+ total +" | Fans: "+ API.getDJ().fans +" | Curated: "+ API.getDJ().curatorPoints +".");
+            Countrybot.misc.ready = false;
+            setTimeout(function(){ Countrybot.misc.ready = true; }, Countrybot.settings.cooldown * 1000);
+          }
+          break;
+
+        case "bot":
+          if(API.getUser(fromID).permission < 2 || API.getUser(fromID).permission > 1){
+            API.sendChat("You have something to say?? @"+ data.from);
+            Countrybot.misc.ready = false;
+            setTimeout(function(){ Countrybot.misc.ready = true; }, Countrybot.settings.cooldown * 1000);
+          }
+          break;
+
+        case "comandos":
+          if(API.getUser(fromID).permission < 2 || API.getUser(fromID).permission > 1){
+            API.sendChat("comandos");
+            setTimeout(function(){
+              API.sendChat("regras | temas | add | link | fb | define | songlink | download | votos | djinfo | ping | marco | abraço | drink | cookie | drugs | punir | like");
+            }, 650);
+            setTimeout(function(){
+              API.sendChat("test | meuid | woot | meh | skip | tcf | trf | thf | tsf | tbf | version | lock | unlock | lockskip | save | changelog | cancel | source | status | segundos | minutos");
+            }, 1000);
+            Countrybot.misc.ready = false;
+            setTimeout(function(){ Countrybot.misc.ready = true; }, Countrybot.settings.cooldown * 1000);
+          }
+          break;
+
+        case "autowoot":
+          if(API.getUser(fromID).permission < 2 || Countrybot.admins.indexOf(fromID) > -1){
+            API.sendChat(data.from +" Tutorial Auto-woot Video > http://youtu.be/2d5ApIHKvYY (pls 720p). Tutorial em texto PT-BR > http://goo.gl/YcXZLw");
+            Countrybot.misc.ready = false;
+            setTimeout(function(){ Countrybot.misc.ready = true; }, Countrybot.settings.cooldown * 1000);
+          }
+          break;
+        case "meuid":
+          if(API.getUser(fromID).permission > 1 || Countrybot.admins.indexOf(fromID) > -1 || API.getUser(fromID).permission < 2){
+            API.sendChat("Username: "+ data.from +" ID: "+ data.fromID);
+            Countrybot.misc.ready = false;
+            setTimeout(function(){ Countrybot.misc.ready = true; }, Countrybot.settings.cooldown * 1000);
+          }
+          break;
+
+        case "ping":
+          if(API.getUser(fromID).permission > 1 || Countrybot.admins.indexOf(fromID) > -1 || API.getUser(fromID).permission < 2){
+            API.sendChat("@"+ data.from +" Pong!");
+            Countrybot.misc.ready = false;
+            setTimeout(function(){ Countrybot.misc.ready = true; }, Countrybot.settings.cooldown * 1000);
+          }
+          break;
+
+        case "marco":
+          if(API.getUser(fromID).permission > 1 || Countrybot.admins.indexOf(fromID) > -1 || API.getUser(fromID).permission < 2){
+            API.sendChat("@"+ data.from +" POLO!");
+            Countrybot.misc.ready = false;
+            setTimeout(function(){ Countrybot.misc.ready = true; }, Countrybot.settings.cooldown * 1000);
+          }
+          break;
+
+        case "regras":
+          if(typeof command[1] == "undefined"){
+            API.sendChat(" Tempo máximo 6 minutos e 30 segundos. Não peça cargos. Respeitar os moderadores e os demais players da sala. Não coloque videos com cenas explícitas, pornografia e etc. Não divulgue links de outras salas.");
+          }else if(command[1].indexOf("@") > -1){
+            API.sendChat(command[1]+" Tempo máximo 6 minutos e 30 segundos. Não peça cargos. Respeitar os moderadores e os demais players da sala. Não coloque videos com cenas explícitas, pornografia e etc. Não divulgue links de outras salas.");
+          }else{
+            API.sendChat(" Tempo máximo 6 minutos e 30 segundos. Não peça cargos. Respeitar os moderadores e os demais players da sala. Não coloque videos com cenas explícitas, pornografia e etc. Não divulgue links de outras salas.");
+          }
+          if(Countrybot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 2){
+            Countrybot.misc.ready = false;
+            setTimeout(function(){ Countrybot.misc.ready = true; }, Countrybot.settings.cooldown * 1000);
+          }
+          break;
+
+        case "temas":
+          if(typeof command[1] == "undefined"){
+            API.sendChat("Temas: Kpop, Progressive House, J music, EDM, Vocaloid, Electro, Kmusic, JRock, Hardstyle, Cultura Oriental, Drumstep, AMV, Dubstep, Cosplay, Game Music, Trap, Trance, Nico Nico Dancers, Techno, DnB, Rock, Indie.");
+          }else if(command[1].indexOf("@") > -1){
+            API.sendChat(command[1]+"Temas: Kpop, Progressive House, J music, EDM, Vocaloid, Electro, Kmusic, JRock, Hardstyle, Cultura Oriental, Drumstep, AMV, Dubstep, Cosplay, Game Music, Trap, Trance, Nico Nico Dancers, Techno, DnB, Rock, Indie.");
+          }else{
+            API.sendChat("Temas: Kpop, Progressive House, J music, EDM, Vocaloid, Electro, Kmusic, JRock, Hardstyle, Cultura Oriental, Drumstep, AMV, Dubstep, Cosplay, Game Music, Trap, Trance, Nico Nico Dancers, Techno, DnB, Rock, Indie.");
+          }
+          if(Countrybot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 2){
+            Countrybot.misc.ready = false;
+            setTimeout(function(){ Countrybot.misc.ready = true; }, Countrybot.settings.cooldown * 1000);
+          }
+          break;
+
+        case "whywoot":
+          if(typeof command[1] == "undefined"){
+            API.sendChat("Plug gives you 1 point for wooting the current song if you don't like the song i suggest you remain neutral");
+          }else if(command[1].indexOf("@") > -1){
+            API.sendChat(command[1]+" Plug gives you 1 point for wooting the current song if you don't like the song i suggest you remain neutral");
+          }else{
+            API.sendChat("Plug gives you 1 point for wooting the current song if you don't like the song i suggest you remain neutral");
+          }
+          if(Countrybot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 2){
+            Countrybot.misc.ready = false;
+            setTimeout(function(){ Countrybot.misc.ready = true; }, Countrybot.settings.cooldown * 1000);
+          }
+          break;
+
+        case "like":
+        case "bonus":
+          if(typeof command[1] == "undefined"){
+            API.sendChat("@"+ data.from +" gostou pra carolho da sua música @"+ API.getDJ().username +", continue assim!");
+          }
+          break;
+
+        case "whymeh":
+          if(typeof command[1] == "undefined"){
+            API.sendChat("Reserve Mehs for songs that are a) extremely overplayed b) off genre c) absolutely god awful or d) troll songs. ");
+          }else if(command[1].indexOf("@") > -1){
+            API.sendChat(command[1]+" Reserve Mehs for songs that are a) extremely overplayed b) off genre c) absolutely god awful or d) troll songs. ");
+          }else{
+            API.sendChat("Reserve Mehs for songs that are a) extremely overplayed b) off genre c) absolutely god awful or d) troll songs. ");
+          }
+          if(Countrybot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 2){
+            Countrybot.misc.ready = false;
+            setTimeout(function(){ Countrybot.misc.ready = true; }, Countrybot.settings.cooldown * 1000);
+          }
+          break;
+
+        case "ajudasfa":
+          if(typeof command[1] == "undefined"){
+            API.sendChat("Bem-vindo a sala AMMBR, para ver os comandos digite: .comandos | R");
+            setTimeout(function(){
+              API.sendChat("Ask a mod if you're unsure about your song choice.");
+            }, 650);
+          }else if(command[1].indexOf("@") > -1){
+            API.sendChat(command[1]+ "Welcome to the The Country Club! Create a playlist and populate it with songs from either YouTube or Soundcloud. Click the 'Join Waitlist' button and wait your turn to play music.");
+            setTimeout(function(){
+              API.sendChat("Ask a mod if you're unsure about your song choice.");
+            }, 650);
+          }
+          if(Countrybot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 2){
+            Countrybot.misc.ready = false;
+            setTimeout(function(){ Countrybot.misc.ready = true; }, Countrybot.settings.cooldown * 1000);
+          }
+          break;
+
+        case "wiki":
+          if(typeof command[1] == "undefined"){
+            API.sendChat("@"+data.from+" https://en.wikipedia.org/wiki/Special:Random");
+          }else{
+            var r = data.message.substring(6).replace(g, "_");
+            $.getJSON("http://jsonp.appspot.com/?callback=?&url=" + escape("http://en.wikipedia.org/w/api.php?action=query&prop=links&format=json&titles="+r.replace(g,"_")),
+                function(wikiData){
+                  if (!wikiData || !wikiData.query || !wikiData.query.pages);
+                  return API.sendChat("@"+data.from+" http://en.wikipedia.org/wiki/"+r+" (NOT GUARANTEED TO BE CORRECT)");
+                  if (wikiData.query.pages[-1]) {
+                    API.sendChat("@"+data.from+" article not found");
+                  }else{
+                    for (var i in wikiData.query.pages)
+              // note: the #... is just to make the url look nicer
+              return API.sendChat("@"+data.from+" https://en.wikipedia.org/wiki/?curid="+i+"#"+escape(wikiData.query.pages[i].title) );
+                  }
                 }
+                );
+          }
+          if(Countrybot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 2){
+            Countrybot.misc.ready = false;
+            setTimeout(function(){ Countrybot.misc.ready = true; }, Countrybot.settings.cooldown * 1000);
+          }
+          break;
+
+        case "link":
+          if(typeof command[1] == "undefined"){
+            API.sendChat("@" + data.from + " Coloque um link iniciando com www.");
+          }else if(command[1].toLowerCase().indexOf("plug.dj") === -1 && command[1].toLowerCase().indexOf("bug.dj") === -1 && command[1].toLowerCase().indexOf("porn") === -1 && command[1].toLowerCase().indexOf("sex") === -1){
+            API.sendChat("http://"+command[1]);
+          }else{
+            API.sendChat("@"+ data.from +" Você é idiota?");
+          }
+          if(Countrybot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 2){
+            Countrybot.misc.ready = false;
+            setTimeout(function(){ Countrybot.misc.ready = true; }, Countrybot.settings.cooldown * 1000);
+          }
+          break;
+
+        case "define":
+          if(typeof command[1] == "undefined"){
+            API.sendChat("@" + data.from + " Definiçao de que?!");
+          }else if(command[1].toLowerCase().indexOf("xxx") === -1 && command[1].toLowerCase().indexOf("porn") === -1 && command[1].toLowerCase().indexOf("sex") === -1){
+            API.sendChat("@"+ data.from +" http://www.urbandictionary.com/define.php?term="+command[1]);
+          }else{
+            API.sendChat("@"+ data.from +" Você é idiota?");
+          }
+          if(Countrybot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 2){
+            Countrybot.misc.ready = false;
+            setTimeout(function(){ Countrybot.misc.ready = true; }, Countrybot.settings.cooldown * 1000);
+          }
+          break;
+
+        case "songlink":
+          if(API.getMedia().format == 1){
+            API.sendChat("@" + data.from + " " + "http://youtu.be/" + API.getMedia().cid);
+          }else{
+            var id = API.getMedia().cid;
+            SC.get('/tracks', { ids: id,}, function(tracks) {
+              API.sendChat("@"+data.from+" "+tracks[0].permalink_url);
+            });
+          }
+          if(Countrybot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 2){
+            Countrybot.misc.ready = false;
+            setTimeout(function(){ Countrybot.misc.ready = true; }, Countrybot.settings.cooldown * 1000);
+          }
+          break;
+
+        case "download":
+          if(typeof command[1] == "undefined"){
+            API.sendChat("Faça download desse som aqui: http://www.vebsi.com/");
+          }else if(command[1].indexOf("@") > -1){
+            API.sendChat(command[1]+" Faça download desse som aqui: http://www.vebsi.com/");
+          }else{
+            API.sendChat("Faça download desse som aqui: http://www.vebsi.com/");
+          }
+          if(Countrybot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 2){
+            Countrybot.misc.ready = false;
+            setTimeout(function(){ Countrybot.misc.ready = true; }, Countrybot.settings.cooldown * 1000);
+          }
+          break;
+
+      }
+    }
+  }
+});
+
+API.on(API.CHAT, function(data){
+  if(data.message.indexOf('!') === 0){
+    var msg = data.message, from = data.from, fromID = data.fromID;
+    var command = msg.substring(1).split(' ');
+    if(typeof command[2] != "undefined"){
+      for(var i = 2; i<command.length; i++){
+        command[1] = command[1] + ' ' + command[i];
+      }
+    }
+    if(Countrybot.misc.ready || Countrybot.admins.indexOf(fromID) > -1 || API.getUser(fromID).permission > 1){
+      switch(command[0].toLowerCase()){
+
+        case "add":
+            if(API.getUser(fromID).permission > 1 || Countrybot.admins.indexOf(fromID) > -1){
+                $(".icon-curate").click();
+                $($(".curate").children(".menu").children().children()[0]).mousedown();
+              }
+              break;
+
+        case "say":
+          if(API.getUser(fromID).permission > 1 || Countrybot.admins.indexOf(fromID) > -1){
+            if(typeof command[1] === "undefined"){
+            }else{
+              API.sendChat(command[1]);
             }
-            if(mubBot.misc.ready || mubBot.admins.indexOf(fromID) > -1 ||API.getUser(fromID).permission > 1){
-                switch(command[0].toLowerCase()){
-                    case "taco":
-                        if(typeof command[1].indexOf("@") === 0){
-                            var crowd = API.getUsers();
-                            var randomUser = Math.floor(Math.random() * crowd.length);
-                            var randomTaco = Math.floor(Math.random() * mubBot.misc.tacos.length);
-                            var randomSentence = Math.floor(Math.random() * 3);
-                            switch(randomSentence){
-                                case 0:
-                                    API.sendChat("@" + crowd[randomUser].username + ", toma esse(a) " + mubBot.misc.tacos[randomTaco] + ", sua vadia!");
-                                    break;
-                                case 1:
-                                    API.sendChat("@" + crowd[randomUser].username + ", rápido! Coma esse(a) " + mubBot.misc.tacos[randomTaco] + " antes que eu coma!");
-                                    break;
-                                case 2:
-                                    API.sendChat("Um(a) " + mubBot.misc.tacos[randomTaco] + " para voce, @" + crowd[randomUser].username + ". :3");
-                                    break;
-                                case 3:
-                                    API.sendChat("/me lança um(a) " + mubBot.misc.tacos[randomTaco] + " em @" + crowd[randomUser].username + "!");
-                                    break;
-                                default:
-                                    API.sendChat('Who the hell is that?');
-                                    break;
-                            }
-                        }else{
-                            if(command[1].indexOf("@") === 0) command[1] = command[1].substring(1);
-                            var randomTaco = Math.floor(Math.random() * mubBot.misc.tacos.length);
-                            var randomSentence = Math.floor(Math.random() * 3);
-                            switch(randomSentence){
-                                case 0:
-                                    API.sendChat("@" + botMethods.cleanString(command[1]) + ", toma esse(a) " + mubBot.misc.tacos[randomTaco] + ", sua vadia!");
-                                    break;
-                                case 1:
-                                    API.sendChat("@" + botMethods.cleanString(command[1]) + ", rápido! Coma esse(a) " + mubBot.misc.tacos[randomTaco] + " antes que eu coma!");
-                                    break;
-                                case 2:
-                                    API.sendChat("Um(a) " + mubBot.misc.tacos[randomTaco] + " para voce, @" + botMethods.cleanString(command[1]) + ". :3");
-                                    break;
-                                case 3:
-                                    API.sendChat("/me lança uma " + mubBot.misc.tacos[randomTaco] + " em @" + botMethods.cleanString(command[1]) + "!");
-                                    break;
-                                default:
-                                    API.sendChat('Who the hell is that?');
-                                    break;
-                            }
-                        }
-                        if(mubBot.admins.indexOf(fromID) > -1 || API.getUser(fromID).permission < 1){
-                            mubBot.misc.ready = false;
-                            setTimeout(function(){ mubBot.misc.ready = true; }, mubBot.settings.cooldown * 1000);
-                        }
-                        break;
-                    case "abraço":
-                        if(typeof command[1].indexOf("@") === 0){
-                            var crowd = API.getUsers();
-                            var randomUser = Math.floor(Math.random() * crowd.length);
-                            var randomSentence = Math.floor(Math.random() * 3);
-                            switch(randomSentence){
-                                case 0:
-                                    //API.sendChat("Abraços? Esqueça isso!");
-                                    setTimeout(function(){
-                                        API.sendChat("/me agarra a bunda de @"+crowd[randomUser].username+"!");
-                                    }, 650);
-                                    break;
-                                case 1:
-                                    API.sendChat("/me dá um grande abraço de urso em @"+crowd[randomUser].username+"!");
-                                    break;
-                                case 2:
-                                    API.sendChat("/me gives @"+crowd[randomUser].username+" a soft, furry hug");
-                                    break;
-                                case 3:
-                                    API.sendChat("/me dá um abraço estranho em @"+crowd[randomUser].username+"!");
-                                    break;
-                                default:
-                                    API.sendChat('Que diabos é isso?');
-                                    break;
-                            }
-                        }else{
-                            if(command[1].indexOf("@") === 0) command[1] = command[1].substring(1);
-                            var crowd = API.getUsers();
-                            var randomUser = Math.floor(Math.random() * crowd.length);
-                            var randomSentence = Math.floor(Math.random() * 3);
-                            switch(randomSentence){
-                                case 0:
-                                    //API.sendChat("Abraços? Esqueça isso!");
-                                    setTimeout(function(){
-                                        API.sendChat("/me agarra a bunda de @"+botMethods.cleanString(command[1])+"!");
-                                    }, 650);
-                                    break;
-                                case 1:
-                                    API.sendChat("/me dá um grande abraço de urso em @"+botMethods.cleanString(command[1])+"!");
-                                    break;
-                                case 2:
-                                    API.sendChat("/me dá um abraço macio em @"+botMethods.cleanString(command[1])+"!");
-                                    break;
-                                case 3:
-                                    API.sendChat("/me dá um abraço estranho em @"+botMethods.cleanString(command[1])+"!");
-                                    break;
-                                default:
-                                    API.sendChat('Que diabos é isso?');
-                                    break;
-                            }
-                        }
-                        if(mubBot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 1){
-                            mubBot.misc.ready = false;
-                            setTimeout(function(){ mubBot.misc.ready = true; }, mubBot.settings.cooldown * 1000);
-                        }
-                        break;
-                    case "punir":
-                        if(typeof command[1].indexOf("@") === 0){
-                            var crowd = API.getUsers();
-                            var randomUser = Math.floor(Math.random() * crowd.length);
-                            var randomSentence = Math.floor(Math.random() * 3);
-                            switch(randomSentence){
-                                case 0:
-                                    API.sendChat("/me esfrega uma lixa no escroto do @"+crowd[randomUser].username+"!");
-                                    break;
-                                case 1:
-                                    API.sendChat("/me cutuca os olhos de @"+crowd[randomUser].username+"!");
-                                    break;
-                                case 2:
-                                    API.sendChat("/me joga arreia nos olhos de @"+crowd[randomUser].username+"!");
-                                    break;
-                                case 3:
-                                    API.sendChat("/me faz a mãe de @"+crowd[randomUser].username+" chorar!");
-                                    break;
-                                case 4:
-                                    API.sendChat("/me penetra @"+crowd[randomUser].username+" com uma caneta!");
-                                    break;
-                                case 5:
-                                    API.sendChat("/me aperta os mamilos de @"+crowd[randomUser].username+"!");
-                                    break;
-                                case 6:
-                                    API.sendChat("/me deixa @"+crowd[randomUser].username+" todo molhadinho(a)!");
-                                    break;
-                                case 7:
-                                    API.sendChat("/me taca fogo no cabelo de @"+crowd[randomUser].username+"!");
-                                    break;
-                                default:
-                                    API.sendChat('Que diabos é isso?');
-                                    break;
-                            }
-                        }else{
-                            if(command[1].indexOf("@") === 0) command[1] = command[1].substring(1);
-                            var randomSentence = Math.floor(Math.random() * 3);
-                            switch(randomSentence){
-                                case 0:
-                                    API.sendChat("/me esfrega uma lixa no escroto do @"+botMethods.cleanString(command[1])+"'!");
-                                    break;
-                                case 1:
-                                    API.sendChat("/me cutuca os olhos de @"+botMethods.cleanString(command[1])+"!");
-                                    break;
-                                case 2:
-                                    API.sendChat("/me joga arreia nos olhos de @"+botMethods.cleanString(command[1])+"!");
-                                    break;
-                                case 3:
-                                    API.sendChat("/me faz a mãe de @"+botMethods.cleanString(command[1])+" chorar!");
-                                    break;
-                                case 4:
-                                    API.sendChat("/me penetra @"+botMethods.cleanString(command[1])+" com uma caneta!");
-                                    break;
-                                case 5:
-                                    API.sendChat("/me aperta os mamilos de @"+botMethods.cleanString(command[1])+"!");
-                                    break;
-                                case 6:
-                                    API.sendChat("/me deixa @"+botMethods.cleanString(command[1])+" todo molhadinho(a)!");
-                                    break;
-                                case 7:
-                                    API.sendChat("/me tava fogo no cabelo de @"+botMethods.cleanString(command[1])+"!");
-                                    break;
-                                default:
-                                    API.sendChat('Que diabos é isso?');
-                                    break;
-                            }
-                        }
-                        if(mubBot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 1){
-                            mubBot.misc.ready = false;
-                            setTimeout(function(){ mubBot.misc.ready = true; }, mubBot.settings.cooldown * 1000);
-                        }
-                        break;
+          }
+          break;
 
-                    case "run":
-                        if(mubBot.admins.indexOf(fromID) > -1){
-                            a = botMethods.cleanString(command[1]);
-                            console.log(a);
-                            eval(a);
-                        }
-                        break;
-
-                }
+        case "skip":
+          if(API.getUser(data.fromID).permission > 1 || Countrybot.admins.indexOf(fromID) > -1){
+            if(typeof command[1] === "undefined"){
+              API.moderateForceSkip()
+            }else{
+              API.sendChat("Este comando requer bouncer +");
             }
-        }
-    });
+          }
+          break;
 
-    API.on(API.CHAT, function(data){
-        if(data.message.indexOf('!') === 0){
-            var msg = data.message, from = data.from, fromID = data.fromID;
-            var command = msg.substring(1).split(' ');
-            if(typeof command[2] != "undefined"){
-                for(var i = 2; i<command.length; i++){
-                    command[1] = command[1] + ' ' + command[i];
-                }
+        case "unlock":
+          if(API.getUser(data.fromID).permission > 1 || Countrybot.admins.indexOf(fromID) > -1){
+            if(typeof command[1] === "undefined"){
+              API.moderateLockWaitList(false);
             }
-            if(mubBot.misc.ready || mubBot.admins.indexOf(fromID) > -1 || API.getUser(data.fromID).permission > 1){
-                switch(command[0].toLowerCase()){
-                    case "ping":
-                        API.sendChat("@"+data.from+ " PONG!");
-                        if(mubBot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 1){
-                            mubBot.misc.ready = false;
-                            setTimeout(function(){ mubBot.misc.ready = true; }, mubBot.settings.cooldown * 1000);
-                        }
-                        break;
+          }
+          break;
 
-
-                    case "weird":
-                    case "weirdday":
-                    case "wierd":
-                    case "wierdday":
-                        if(typeof command[1] == "undefined"){
-                            API.sendChat("Weird Songs - http://playmc.pw/plug/WeirdDay.html");
-                        }else if(command[1].indexOf("@") > -1){
-                            API.sendChat(command[1]+" Weird Songs - http://playmc.pw/plug/WeirdDay.html");
-                        }else{
-                            API.sendChat("Weird Songs - http://playmc.pw/plug/WeirdDay.html");
-                        }
-                        if(mubBot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 1){
-                            mubBot.misc.ready = false;
-                            setTimeout(function(){ mubBot.misc.ready = true; }, mubBot.settings.cooldown * 1000);
-                        }
-                        break;
-
-                    case "usercommands":
-                        if(typeof command[1] == "undefined"){
-                            API.sendChat("User Commands - Not Available Yet");
-                        }else if(command[1].indexOf("@") > -1){
-                            API.sendChat(command[1]+" User Commands - Not Available Yet");
-                        }else{
-                            API.sendChat("User Commands - Not Availble Yet");
-                        }
-                        if(mubBot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 1){
-                            mubBot.misc.ready = false;
-                            setTimeout(function(){ mubBot.misc.ready = true; }, mubBot.settings.cooldown * 1000);
-                        }
-                        break;
-
-                    case "modcommands":
-                        if(typeof command[1] == "undefined"){
-                            API.sendChat("Mods Commands - Not Available Yet");
-                        }else if(command[1].indexOf("@") > -1){
-                            API.sendChat(command[1]+" Mods Commands - Not Available Yet");
-                        }else{
-                            API.sendChat("Mods Commands - Not Available Yet");
-                        }
-                        if(mubBot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 1){
-                            mubBot.misc.ready = false;
-                            setTimeout(function(){ mubBot.misc.ready = true; }, mubBot.settings.cooldown * 1000);
-                        }
-                        break;
-
-                    case "users":
-                        if(typeof command[1] == "undefined"){
-                            API.sendChat("User List - Not Available Yet");
-                        }else if(command[1].indexOf("@") > -1){
-                            API.sendChat(command[1]+" User List - Not Available Yet");
-                        }else{
-                            API.sendChat("User List - Not Available Yet");
-                        }
-                        if(mubBot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 1){
-                            mubBot.misc.ready = false;
-                            setTimeout(function(){ mubBot.misc.ready = true; }, mubBot.settings.cooldown * 1000);
-                        }
-                        break;
-
-                    case "wikii":
-                        if(typeof command[1] == "undefined"){
-                            API.sendChat("@"+data.from+" https://en.wikipedia.org/wiki/Special:Random");
-                        }else{
-                            var r = data.message.substring(6).replace(/ /g, "_");
-                            $.getJSON("http://jsonp.appspot.com/?callback=?&url=" + escape("http://en.wikipedia.org/w/api.php?action=query&prop=links&format=json&titles="+r.replace(/ /g,"_")),
-                                function(wikiData){
-                                    if (!wikiData || !wikiData.query || !wikiData.query.pages) // there's an error. pssh, don't let anyone know ;)
-                                        return API.sendChat("@"+data.from+" http://en.wikipedia.org/wiki/"+r+" (NOT GUARANTEED TO BE CORRECT)");
-                                    if (wikiData.query.pages[-1]) {
-                                        API.sendChat("@"+data.from+" article not found");
-                                    }else{
-                                        for (var i in wikiData.query.pages)
-                                            // note: the #... is just to make the url look nicer
-                                            return API.sendChat("@"+data.from+" https://en.wikipedia.org/wiki/?curid="+i+"#"+escape(wikiData.query.pages[i].title) );
-                                    }
-                                }
-                            );
-                        }
-                        if(mubBot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 1){
-                            mubBot.misc.ready = false;
-                            setTimeout(function(){ mubBot.misc.ready = true; }, mubBot.settings.cooldown * 1000);
-                        }
-                        break;
-
-
-                    case "nadacaraioiewogiwe":
-                        if(typeof command[1] == "undefined"){
-                            API.sendChat("Entre em nosso Grupo  - Grupo: https://www.facebook.com/groups/243596829136963/");
-                        }else if(command[1].indexOf("@") > -1){
-                            API.sendChat(command[1]+"Entre em nosso Grupo  - Grupo: https://www.facebook.com/groups/243596829136963/");
-                        }else{
-                            API.sendChat("Entre em nosso Grupo  - Grupo: https://www.facebook.com/groups/243596829136963/");
-                        }
-                        if(mubBot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 1){
-                            mubBot.misc.ready = false;
-                            setTimeout(function(){ mubBot.misc.ready = true; }, mubBot.settings.cooldown * 1000);
-                        }
-                        break;
-
-                    case "linkifyy":
-                        if(typeof command[1] == "undefined"){
-                            API.sendChat("@" + data.from + " You need to put a link!");
-                        }else if(command[1].toLowerCase().indexOf("plug.dj") === -1 && command[1].toLowerCase().indexOf("bug.dj") === -1){
-                            API.sendChat("http://"+command[1]);
-                        }else{
-                            API.sendChat("Nice try! Advertising is not allowed in this room.");
-                        }
-                        if(mubBot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 1){
-                            mubBot.misc.ready = false;
-                            setTimeout(function(){ mubBot.misc.ready = true; }, mubBot.settings.cooldown * 1000);
-                        }
-                        break;
-
-                    case "songlink":
-                        if(API.getMedia().format == 1){
-                            API.sendChat("@" + data.from + " " + "http://youtu.be/" + API.getMedia().cid);
-                        }else{
-                            var id = API.getMedia().cid;
-                            SC.get('/tracks', { ids: id,}, function(tracks) {
-                                API.sendChat("@"+data.from+" "+tracks[0].permalink_url);
-                            });
-                        }
-                        if(mubBot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 1){
-                            mubBot.misc.ready = false;
-                            setTimeout(function(){ mubBot.misc.ready = true; }, mubBot.settings.cooldown * 1000);
-                        }
-                        break;
-
-                    case "source":
-                        API.sendChat("@"+data.from+ " Not Available");
-                        if(mubBot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 1){
-                            mubBot.misc.ready = false;
-                            setTimeout(function(){ mubBot.misc.ready = true; }, mubBot.settings.cooldown * 1000);
-                        }
-                        break;
-
-                }
+        case "lock":
+          if(API.getUser(data.fromID).permission > 1 || Countrybot.admins.indexOf(fromID) > -1){
+            if(typeof command[1] === "undefined"){
+              API.moderateLockWaitList(true);
             }
-        }
-    });
+          }
+          break;
 
-    API.on(API.CHAT, function(data){
-        if(data.message.indexOf('!') === 0){
-            var msg = data.message, from = data.from, fromID = data.fromID;
-            var command = msg.substring(1).split(' ');
-            if(typeof command[2] != "undefined"){
-                for(var i = 2; i<command.length; i++){
-                    command[1] = command[1] + ' ' + command[i];
-                }
+        case "meh":
+          if(API.getUser(fromID).permission > 1 || Countrybot.admins.indexOf(fromID) > -1){
+            if(typeof command[1] === "undefined"){
+              API.sendChat("Meh!");
+              setTimeout(function(){
+                document.getElementById("meh").click()
+              }, 650);
+            }else{
+              API.sendChat("Este comando requer bouncer +");
             }
-            if(mubBot.misc.ready || mubBot.admins.indexOf(fromID) > -1 || API.getUser(fromID).permission > 1){
-                switch(command[0].toLowerCase()){
-                    /* commented out because the bot isn't running on a dedicated bot account
-                     case "meh":
-                     if(API.getUser(data.fromID).permission > 1 || mubBot.admins.indexOf(fromID) > -1) $("#button-vote-negative").click();
-                     break;
+          }
+          break;
 
-                     case "woot":
-                     if(API.getUser(data.fromID).permission > 1 || mubBot.admins.indexOf(fromID) > -1)  $("#button-vote-positive").click();
-                     break;*/
-
-                    case "skip":
-                    if(API.getUser(data.fromID).permission > 1){
-                        if(typeof command[1] === "undefined"){
-                            API.moderateForceSkip();
-                        }else{
-                            API.sendChat('@'+API.getDJs()[0].username+' '+command[1]);
-                            API.moderateForceSkip();
-                        }
-                    }
-                        break;
-
-                    case 'cancel':
-                        cancel = true;
-                        API.sendChat('AutoSkip cancelled');
-                        break;
-
-                    case "lockskip":
-                        if( API.getUser(data.fromID).permission > 1){
-                            API.moderateRoomProps(true, true);
-                            mubBot.misc.lockSkipping = true;
-                            mubBot.misc.lockSkipped = API.getDJs()[0].id;
-                            setTimeout(function(){ API.moderateRemoveDJ(mubBot.misc.lockSkipped); }, 500);
-                        }else{
-                            API.sendChat("Este comando só pode ser usado por um Bouncer ou Superiores!");
-                        }
-                        break;
-                    case 'fvr':
-                    case 'removedfilter':
-                        if(API.getUser(fromID).permission > 1 || mubBot.admins.indexOf(fromID) > -1) mubBot.settings.removedFilter ? API.sendChat("Filtro de video removido ativado.") : API.sendChat("Filtro de video removido desativado.");
-                        break;
-                    case 'trvf':
-                    case 'toggleremovedfilter':
-                        mubBot.settings.removedFilter = !mubBot.settings.removedFilter;
-                        if(API.getUser(fromID).permission > 1 || mubBot.admins.indexOf(fromID) > -1) mubBot.settings.removedFilter ? API.sendChat("Removed video filter is enabled") : API.sendChat("Removed video is disabled");
-                        break;
-                    case "filtrohistorico":
-                    case "fh":
-                        if(API.getUser(fromID).permission > 1 || mubBot.admins.indexOf(fromID) > -1) mubBot.settings.historyFilter ? API.sendChat("Filtro de Histórico Ativado") : API.sendChat("Filtro de Histórico Desativado");
-                        botMethods.save();
-                        break;
-
-                    case "filtropalavroes":
-                    case "fp":
-                        if(API.getUser(fromID).permission > 1 || mubBot.admins.indexOf(fromID) > -1) mubBot.settings.swearFilter ? API.sendChat("Filtro de Palavrôes Ativado") : API.sendChat("Filtro de Palavrôes Desativado");
-                        botMethods.save();
-                        break;
-
-                    case "filtroracismo":
-                    case "fr":
-                        if(API.getUser(fromID).permission > 1 || mubBot.admins.indexOf(fromID) > -1) mubBot.settings.racismFilter ? API.sendChat("Filtro de Racismo Ativado") : API.sendChat("Filtro de Racismo Desativado");
-                        botMethods.save();
-                        break;
-
-                    case "filtromendigos":
-                    case "fm":
-                        if(API.getUser(fromID).permission > 1 || mubBot.admins.indexOf(fromID) > -1) mubBot.settings.beggerFilter ? API.sendChat("Filtro de Mendigos Ativado") : API.sendChat("Filtro de Mendigos Desativado");
-                        botMethods.save();
-                        break;
-
-                    case "tfp":
-                        if(API.getUser(fromID).permission > 1 || mubBot.admins.indexOf(fromID) > -1){
-                            if(mubBot.settings.swearFilter){
-                                mubBot.settings.swearFilter = false;
-                                API.sendChat("Filtro de Palavrôes pode ser desativado.");
-                            }else{
-                                mubBot.settings.swearFilter = true;
-                                API.sendChat("Filtro de Palavrôes pode ser ativado.");
-                            }
-                        }
-                        botMethods.save();
-                        break;
-
-                    case "tfr":
-                        if(API.getUser(fromID).permission > 1 || mubBot.admins.indexOf(fromID) > -1){
-                            if(mubBot.settings.racismFilter){
-                                mubBot.settings.racismFilter = false;
-                                API.sendChat("Filtro de Racismo pode ser desativado.");
-                            }else{
-                                mubBot.settings.racismFilter = true;
-                                API.sendChat("Filtro de Racismo pode ser ativado.");
-                            }
-                        }
-                        botMethods.save();
-                        break;
-
-                    case "tfm":
-                        if(API.getUser(fromID).permission > 1 || mubBot.admins.indexOf(fromID) > -1){
-                            if(mubBot.settings.beggerFilter){
-                                mubBot.settings.beggerFilter = false;
-                                API.sendChat("Filtro de Mendigos pode ser desativado.");
-                            }else{
-                                mubBot.settings.beggerFilter = true;
-                                API.sendChat("Filtro de Mendigos pode ser ativado.");
-                            }
-                        }
-                        botMethods.save();
-                        break;
-                    case "tfh":
-                        if(API.getUser(fromID).permission > 1 || mubBot.admins.indexOf(fromID) > -1){
-                            if(mubBot.settings.historyFilter){
-                                mubBot.settings.historyFilter = false;!
-                                    API.sendChat("Filtro de Histórico pode ser desativado.");
-                            }else{
-                                mubBot.settings.historyFilter = true;
-                                API.sendChat("Filtro de Histórico pode ser ativado.");
-                            }
-                        }
-                        botMethods.save();
-                        break;
-                    case "regras":
-                        API.sendChat("Regras: " + mubBot.misc.Rules); //
-                    break
-
-                    case "rules":
-                        API.sendChat("Rules: " + mubBot.misc.Rules2);
-                    break
-                    case "fb":
-                        API.sendChat("Curta a página no Facebook /Like the page on facebook: https://www.facebook.com/pages/Anime-Music-Music-Music/560101824082085 ");
-                    break
-                    case "temas":
-                    case "tema":
-                        API.sendChat("Temas/Themes: " + mubBot.misc.Themes);
-                    break
-
-                    case "ajuda":
-                        API.sendChat(mubBot.misc.help);
-                    break
-
-                    case "adblock":
-                        API.sendChat("Use: http://adblockplus.org/");
-                    break
-
-                    case "autowoot":
-                        API.sendChat("Tutorial Auto-woot Video > http://youtu.be/2d5ApIHKvYY (pls 720p). Tutorial em texto PT-BR > http://goo.gl/YcXZLw .Text tutorial EN-US > http://goo.gl/YcXZLw");
-                    break
-
-                    case "commands":
-                    case "command":
-                        API.sendChat(mubBot.misc.Commands);
-                    break
-
-                    case "version":
-                        API.sendChat("AKJ-BR ChatBot version " + mubBot.misc.version);
-                        if(mubBot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 1){
-                            mubBot.misc.ready = false;
-                            setTimeout(function(){ mubBot.misc.ready = true; }, mubBot.settings.cooldown * 1000);
-                        }
-                        break;
-
-                    case "origin":
-                    case "author":
-                    case "authors":
-                    case "creator":
-                        API.sendChat(mubBot.misc.origin);
-                        if(mubBot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 1){
-                            mubBot.misc.ready = false;
-                            setTimeout(function(){ mubBot.misc.ready = true; }, mubBot.settings.cooldown * 1000);
-                        }
-                        break;
-
-                    case "status":
-                        if(API.getUser(fromID).permission > 1 || mubBot.admins.indexOf(fromID) > -1){
-                            var response = "";
-                            var currentTime = new Date().getTime();
-                            var minutes = Math.floor((currentTime - joined) / 60000);
-                            var hours = 0;
-                            while(minutes > 60){
-                                minutes = minutes - 60;
-                                hours++;
-                            }
-                            hours == 0 ? response = "Iniciado há " + minutes + "m " : response = "Iniciado há " + hours + "h " + minutes + "m";
-                            response = response + " | Filtro de Mendigos: "+mubBot.settings.beggerFilter;
-                            response = response + " | Filtro de Palavrôes: "+mubBot.settings.swearFilter;
-                            response = response + " | Filtro de Racismo: "+mubBot.settings.racismFilter;
-                            response = response + " | Filtro de Histórico: "+mubBot.settings.historyFilter;
-                            response = response + " | Tempo máximo de minutos: " + mubBot.settings.maxLength + "m";
-                            response = response + " | Segundos: " + mubBot.settings.cooldown + "s";
-                            response = response + " | RuleSkip: "+ mubBot.settings.ruleSkip;
-                            response = response + " | Filtro de Video Removido: "+ mubBot.settings.removedFilter;
-                            API.sendChat(response);
-                        }
-                        break;
-
-                    case "segundos":
-                        if(API.getUser(fromID).permission > 1 || mubBot.admins.indexOf(fromID) > -1){
-                            if(typeof command[1] == "undefined"){
-                                if(mubBot.settings.cooldown != 0.0001){
-                                    API.sendChat('Cooldown is '+mubBot.settings.cooldown+' seconds');
-                                }else{
-                                    API.sendChat('Cooldown is disabled');
-                                }
-                            }else if(command[1] == "disable"){
-                                mubBot.settings.cooldown = 0.0001;
-                                API.sendChat('Cooldown disabled');
-                            }else{
-                                mubBot.settings.cooldown = command[1];
-                                API.sendChat('Tempo maximo de segundos alterado para '+mubBot.settings.cooldown+' s');
-                            }
-                        }
-                        botMethods.save();
-                        break;
-
-                    case "minutos":
-                        if(API.getUser(fromID).permission > 1 || mubBot.admins.indexOf(fromID) > -1){
-                            if(typeof command[1] == "undefined"){
-                                if(mubBot.settings.maxLength != 1e+50){
-                                    API.sendChat('Maxlength is '+mubBot.settings.maxLength+' minutes');
-                                }else{
-                                    API.sendChat('Maxlength is disabled');
-                                }
-                            }else if(command[1] == "disable"){
-                                mubBot.settings.maxLength = Infinity;
-                                API.sendChat('Maxlength disabled');
-                            }else{
-                                mubBot.settings.maxLength = command[1];
-                                API.sendChat('Tempo maximo de minutos alterado para '+mubBot.settings.maxLength+' m');
-                            }
-                        }
-                        botMethods.save();
-                        break;
-
-                    case "interactive":
-                        if(API.getUser(fromID).permission > 1 || mubBot.admins.indexOf(fromID) > -1){
-                            mubBot.settings.interactive ? API.sendChat("Bot is interactive.") : API.sendChat("Bot is not interactive.");
-                        }
-                        break;
-
-                    case "toggleinteractive":
-                    case "ti":
-                        if(API.getUser(fromID).permission > 1 || mubBot.admins.indexOf(fromID) > -1){
-                            if(mubBot.settings.interactive){
-                                mubBot.settings.interactive = false;
-                                API.sendChat("Bot will no longer interact.");
-                            }else{
-                                mubBot.settings.interactive = true;
-                                API.sendChat("Bot will now interact.");
-                            }
-                        }
-                        botMethods.save();
-                        break;
-
-                    case "save":
-                        if(API.getUser(fromID).permission > 1 || mubBot.admins.indexOf(fromID) > -1){
-                            botMethods.save();
-                            API.sendChat("Configuraçôes salvas.");
-                        }
-                        break;
-
-                    case "stfu":
-                        if(API.getUser(fromID).permission > 1 || mubBot.admins.indexOf(fromID) > -1){
-                            mubBot.settings.interactive = false;
-                            API.sendChat("Yessir!");
-                        }
-                        botMethods.save();
-                        break;
-
-                    case "changelog":
-                        if(API.getUser(fromID).permission > 1 || mubBot.admins.indexOf(fromID) > -1){
-                            API.sendChat("New in version " + mubBot.misc.version + " - " + mubBot.misc.changelog)
-                        }
-                        break;
-
-                }
+        case "woot":
+          if(API.getUser(fromID).permission > 1 || Countrybot.admins.indexOf(fromID) > -1){
+            if(typeof command[1] === "undefined"){
+              API.sendChat("Woot!");
+              setTimeout(function(){
+                document.getElementById("woot").click()
+              }, 650);
+            }else {
+              API.sendChat("Este comando requer bouncer +");
             }
-        }
-    });
+          }
+          break;
 
-    API.on(API.CHAT, function(data){
-        if(data.message.indexOf('!regra ') === 0){
-            var msg = data.message, from = data.from, fromID = data.fromID;
-            var command = msg.substring(1).split(' ');
-
-            if(mubBot.misc.ready || mubBot.admins.indexOf(fromID) > -1 ||API.getUser(fromID).permission > 1){
-                switch(command[1]){
-                    case '1':
-                        API.sendChat('Tempo máximo 6 minutos e 30 segundos, Rock no máximo 10 minutos. Maximum time 6 minutes and 30 seconds, genre Rock maximum time 10 minutes.');
-                        break;
-                    case '2':
-                        API.sendChat('Não peça cargos. Do not be asking positions');
-                        break;
-                    case '3':
-                        API.sendChat('Respeitar os moderadores e os demais players da sala. Respect the moderators and other players in the room.');
-                        break;
-                    case '4':
-                        API.sendChat('Não coloque videos com cenas explícitas, pornografia e etc. Do not put videos with explicit, pornographic and etc.');
-                        break;
-                    case '5':
-                        API.sendChat('Não divulgue links de outras salas. Do not post links to other rooms.');
-                        break;
-                    case '6':
-                        API.sendChat('Não mendigue fãs. NO FAN4FAN.');
-                        break;
-                    case '7':
-                        API.sendChat('Não toque músicas repetidas. Do not touch music again. Check the dj history');
-                        break;
-                    default:
-                        API.sendChat('.');
-                        break;
-                }
+        case "join":
+        case "stepup":
+          if(API.getUser(fromID).permission > 1 || Countrybot.admins.indexOf(fromID) > -1){
+            if(typeof command[1] === "undefined"){
+              API.djJoin();
             }
-        }
-    });
+          }
+          break;
 
-    API.on(API.CHAT, function(data){
-        var msg = data.message, fromID = data.fromID;
-        command = msg.substring(1).split(' ');
-        if(typeof command[3] != "undefined"){
-            for(var i = 3; i<command.length; i++){
-                command[2] = command[2] + ' ' + command[i];
+        case "leave":
+        case "down":
+        case "dive":
+          if(API.getUser(fromID).permission > 1 || Countrybot.admins.indexOf(fromID) > -1){
+            if(typeof command[1] === "undefined"){
+              API.djLeave();
             }
-        }
-        if(API.getUser(data.fromID).permission > 1){
-            switch(command[0]){
-                case 'ruleskip':
-                    if(command[1].length === 13 && command[1].indexOf(':') === 1 && command[1].indexOf(1) === 0){
-                        ruleSkip[command[1]] = {id: command[1], rule: command[2]};
-                        $.getJSON("http://gdata.youtube.com/feeds/api/videos/"+command[1].substring(2)+"?v=2&alt=jsonc&callback=?", function(json){
-                            setTimeout(function(){
-                                if(typeof json.data.title !== 'undefined'){
-                                    API.sendChat(json.data.title+' added to ruleskip');
-                                }else{
-                                    API.sendChat('Added to ruleskip');
-                                }
-                            }, 500)
-                        });
-                    }else if(command[1].length === 10 && command[1].indexOf(':') === 1 && command[1].indexOf(2) === 0){
-                        ruleSkip[command[1]] = {id: command[1], rule: command[2]};
-                        SC.get('/tracks', {ids: command[1].substring(2)}, function(tracks) {
-                            if(typeof tracks[0].title !== 'undefined'){
-                                API.sendChat(tracks[0].title+' added to ruleskip');
-                            }else{
-                                API.sendChat('Added to ruleskip');
-                            }
-                        });
-                    }else if(typeof ruleSkip[API.getMedia().id] === 'undefined'){
-                    ruleSkip[API.getMedia().id] = {id: API.getMedia().id, rule: command[1]};
-                    API.sendChat(API.getMedia().author+ ' - ' +API.getMedia().title+' added to ruleskip');
-                    API.moderateForceSkip();
-                }
-                    botMethods.save();
-                    break;
-                case 'checkruleskip':
-                    if(typeof command[1] !== 'undefined'){
-                        if(typeof ruleSkip[command[1]] !== 'undefined') API.sendChat(command[1]+' is in the ruleskip array!');
-                        else API.sendChat(command[1]+' is not in the ruleskip array!');
-                    }else{
-                        if(typeof ruleSkip[API.getMedia().id] !== 'undefined') API.sendChat(API.getMedia().id+' is in the ruleskip array')
-                        else API.sendChat(API.getMedia().id+' is not in the ruleskip array');
-                    }
-                    break;
-                case 'ruleskipdelete':
-                    if(typeof command[1] !== 'undefined' && typeof ruleSkip[command[1]] !== 'undefined'){
-                        delete ruleSkip[command[1]];
-                        API.sendChat(command[1]+' removed from ruleskip');
-                    }else if(typeof command[1] === 'undefined' && typeof ruleSkip[API.getMedia().id] !== 'undefined'){
-                        delete ruleSkip[API.getMedia().id];
-                        API.sendChat(API.getMedia().id+' removed from ruleskip');
-                    }else if(typeof command[1] !== 'undefined'){
-                        API.sendChat(command[1]+' was not in the ruleskip array!');
-                    }else{
-                        API.sendChat(API.getMedia().id+' was not in the ruleskip array!');
-                    }
-                    botMethods.save()
+          }
+          break;
+
+        case 'cancel':
+          cancel = true;
+          API.sendChat('AutoSkip cancelled');
+          break;
+
+        case "lockskip":
+          if(API.getUser(data.fromID).permission > 1 || Countrybot.admins.indexOf(fromID) > -1){
+            API.moderateLockWaitList(true);
+            API.moderateForceSkip();
+            setTimeout(function(){
+              API.moderateLockWaitList(false);
+            }, 650);
+          }else{
+            API.sendChat("Este comando pode ser usado apenas por administradores!");
+          }
+          break;
+
+        case "test":
+          if(Countrybot.admins.indexOf(fromID) > -1){
+            API.sendChat("@"+ data.from +" Test Successful");
+          }else{
+            API.sendChat("Este comando pode ser usado apenas por administradores!");
+          }
+          break;
+
+        case "source":
+          if(API.getUser(data.fromID).permission > 1 || Countrybot.admins.indexOf(fromID) > -1){
+            API.sendChat("Howdy Staff "+ data.from +"! My source is located here: http://goo.gl/xarlwt");
+          }else{
+            API.sendChat("This command requires bouncer only!");
+          }
+          break;
+
+        case "historyfilter":
+        case "hf":
+          if(API.getUser(fromID).permission > 1 || Countrybot.admins.indexOf(fromID) > -1) Countrybot.settings.historyFilter ? API.sendChat("FIltro de historico ativado.") : API.sendChat("Filtro de historico desativado.");
+          botMethods.save();
+          break;
+
+        case "swearfilter":
+        case "sf":
+          if(API.getUser(fromID).permission > 1 || Countrybot.admins.indexOf(fromID) > -1) Countrybot.settings.swearFilter ? API.sendChat("Filtro de palavões ativado.") : API.sendChat("Filtro de palavrões desativado.");
+          botMethods.save();
+          break;
+
+        case "commandfilter":
+        case "cf":
+          if(Countrybot.admins.indexOf(fromID) > -1) Countrybot.settings.commandFilter ? API.sendChat("Filtro de comandos ativado.") : API.sendChat("Filtro de comandos desativado.");
+          botMethods.save();
+          break;
+
+        case "racismfilter":
+        case "rf":
+          if(API.getUser(fromID).permission > 1 || Countrybot.admins.indexOf(fromID) > -1) Countrybot.settings.racismFilter ? API.sendChat("Filtro de racismo ativado.") : API.sendChat("Filtro de racismo desativado.");
+          botMethods.save();
+          break;
+
+        case "beggerfilter":
+        case "bf":
+          if(API.getUser(fromID).permission > 1 || Countrybot.admins.indexOf(fromID) > -1) Countrybot.settings.beggerFilter ? API.sendChat("Filtro de mengidos ativado.") : API.sendChat("Filtro de mendigos desativado.");
+          botMethods.save();
+          break;
+
+        case "tsf":
+          if(API.getUser(fromID).permission > 1 || Countrybot.admins.indexOf(fromID) > -1){
+            if(Countrybot.settings.swearFilter){
+              Countrybot.settings.swearFilter = false;
+              API.sendChat("Bot não esta mais filtrando palavrões.");
+            }else{
+              Countrybot.settings.swearFilter = true;
+              API.sendChat("Bot agora está filtrando palavrões.");
+            }
+          }
+          botMethods.save();
+          break;
+
+        case "tcf":
+          if(API.getUser(data.fromID).permission > 1 || Countrybot.admins.indexOf(fromID) > -1){
+            if(Countrybot.settings.commandFilter){
+              Countrybot.settings.commandFilter = false;
+              API.sendChat("Bot não esta mais filtrando comandos.");
+            }else{
+              Countrybot.settings.commandFilter = true;
+              API.sendChat("Bot agora esta filtrando comandos.");
+            }
+          }
+          botMethods.save();
+          break;
+
+        case "trf":
+          if(API.getUser(fromID).permission > 1 || Countrybot.admins.indexOf(fromID) > -1){
+            if(Countrybot.settings.racismFilter){
+              Countrybot.settings.racismFilter = false;
+              API.sendChat("Bot não esta filtrando atitudes racistas.");
+            }else{
+              Countrybot.settings.racismFilter = true;
+              API.sendChat("Bot agora esta filtrando atitudes racistas.");
+            }
+          }
+          botMethods.save();
+          break;
+
+        case "tbf":
+          if(API.getUser(fromID).permission > 1 || Countrybot.admins.indexOf(fromID) > -1){
+            if(Countrybot.settings.beggerFilter){
+              Countrybot.settings.beggerFilter = false;
+              API.sendChat("Bot não esta filtrando mendigos.");
+            }else{
+              Countrybot.settings.beggerFilter = true;
+              API.sendChat("Bot agora esta filtrando mendigos.");
+            }
+          }
+          botMethods.save();
+          break;
+
+        case "thf":
+          if(API.getUser(fromID).permission > 1 || Countrybot.admins.indexOf(fromID) > -1){
+            if(Countrybot.settings.historyFilter){
+              Countrybot.settings.historyFilter = false;!
+                API.sendChat("Bot não vai pular musicas que ja estão no historico.");
+            }else{
+              Countrybot.settings.historyFilter = true;
+              API.sendChat("Bot agora vai pular musicas que ja estão no historico.");
+            }
+          }
+          botMethods.save();
+          break;
+
+        case "version":
+          if(API.getUser(data.fromID).permission > 1 || Countrybot.admins.indexOf(fromID) > -1){
+            API.sendChat("Bot version " + Countrybot.misc.version);
+          }else{
+            API.sendChat("Este comando pode ser usado apenas por administradores!");
+          }
+          break;
+
+        case "origin":
+        case "author":
+        case "authors":
+        case "creator":
+          if(Countrybot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 2){
+            API.sendChat(Countrybot.misc.origin);
+            Countrybot.misc.ready = false;
+            setTimeout(function(){ mubBot.misc.ready = true; }, Countrybot.settings.cooldown * 1000);
+          }
+          break;
+
+        case "status":
+          if(API.getUser(fromID).permission > 1 || Countrybot.admins.indexOf(fromID) > -1){
+            var response = "";
+            var currentTime = new Date().getTime();
+            var minutes = Math.floor((currentTime - joined) / 60000);
+            var hours = 0;
+            while(minutes > 60){
+              minutes = minutes - 60;
+              hours++;
+            }
+            hours == 0 ? response = "Iniciado há " + minutes + "m " : response = "Iniciado há " + hours + "h " + minutes + "m";
+            response = response + " | Filtro de mendigos: "+Countrybot.settings.beggerFilter;
+            response = response + " | Filtro de palavrões: "+Countrybot.settings.swearFilter;
+            response = response + " | Filtro de comandos: "+Countrybot.settings.commandFilter;
+            response = response + " | Filtro de racismo: "+Countrybot.settings.racismFilter;
+            response = response + " | Filtro de historico: "+Countrybot.settings.historyFilter;
+            response = response + " | Max minutos: " + Countrybot.settings.maxLength + "m";
+            response = response + " | segundos: " + Countrybot.settings.cooldown + "s";
+            response = response + " | Filtro de remover videos: "+ Countrybot.settings.removedFilter;
+            API.sendChat(response);
+          }
+          break;
+
+        case "segundos":
+          if(API.getUser(fromID).permission > 1 || Countrybot.admins.indexOf(fromID) > -1){
+            if(typeof command[1] == "undefined"){
+              if(Countrybot.settings.cooldown != 0.0001){
+                API.sendChat('Cooldown is '+Countrybot.settings.cooldown+' seconds');
+              }else{
+                API.sendChat('Cooldown is disabled');
+              }
+            }else if(command[1] == "disable"){
+              Countrybot.settings.cooldown = 0.0001;
+              API.sendChat('Cooldown disabled');
+            }else{
+              Countrybot.settings.cooldown = command[1];
+              API.sendChat('Tempo maximo de segundos alterado para '+Countrybot.settings.cooldown+' s');
+            }
+          }
+          botMethods.save();
+          break;
+
+        case "minutos":
+          if(API.getUser(fromID).permission > 1 || Countrybot.admins.indexOf(fromID) > -1){
+            if(typeof command[1] == "undefined"){
+              if(Countrybot.settings.maxLength != 1e+50){
+                API.sendChat('Maxlength is '+Countrybot.settings.maxLength+' minutes');
+              }else{
+                API.sendChat('Maxlength is disabled');
+              }
+            }else if(command[1] == "disable"){
+              Countrybot.settings.maxLength = Infinity;
+              API.sendChat('Maxlength disabled');
+            }else{
+              Countrybot.settings.maxLength = command[1];
+              API.sendChat('Tempo maximo de minutos alterado para '+Countrybot.settings.maxLength+' m');
+            }
+          }
+          botMethods.save();
+          break;
+
+        case "interactive":
+          if(API.getUser(fromID).permission > 1 || Countrybot.admins.indexOf(fromID) > -1){
+            Countrybot.settings.interactive ? API.sendChat("Bot is interactive.") : API.sendChat("Bot is not interactive.");
+          }
+          break;
+
+        case "toggleinteractive":
+        case "ti":
+          if(API.getUser(fromID).permission > 1 || Countrybot.admins.indexOf(fromID) > -1){
+            if(Countrybot.settings.interactive){
+              Countrybot.settings.interactive = false;
+              API.sendChat("Bot will no longer interact.");
+            }else{
+              Countrybot.settings.interactive = true;
+              API.sendChat("Bot will now interact.");
+            }
+          }
+          botMethods.save();
+          break;
+
+         case "save":
+          if(Countrybot.admins.indexOf(fromID) > -1){
+            botMethods.save();
+            API.sendChat("Settings saved.");
+          }else{
+            API.sendChat("This command requires Admins only!");
+          }
+          break;
+
+        case "stfu":
+          if(API.getUser(fromID).permission > 1 || Countrybot.admins.indexOf(fromID) > -1){
+            Countrybot.settings.interactive = false;
+            API.sendChat("Yessir!");
+          }
+          botMethods.save();
+          break;
+
+        case "changelog":
+          if(Countrybot.admins.indexOf(fromID) > -1){
+            API.sendChat("Novo na versao " + Countrybot.misc.version + " - " + Countrybot.misc.changelog)
+          }else{
+            API.sendChat("Este comando pode ser usado apenas por administradores!");
+          }
+          break;
+
+      }
+    }
+  }
+});
+
+API.on(API.CHAT, function(data){
+  if(data.message.indexOf('.regra ') === 0){
+    var msg = data.message, from = data.from, fromID = data.fromID;
+    var command = msg.substring(1).split(' ');
+    if(Countrybot.misc.ready || Countrybot.admins.indexOf(fromID) > -1 ||API.getUser(fromID).permission > 1){
+      switch(command[1]){
+        case '1':
+          API.sendChat("Tempo máximo 6 minutos e 30 segundos.");
+          break;
+        case '2':
+          API.sendChat("Não peça cargos. Não divulgue links de outras salas.");
+          break;
+        case '3':
+          API.sendChat("Respeitar os moderadores e os demais players da sala..");
+          break;
+        default:
+          API.sendChat("Não coloque videos com cenas explícitas, pornografia e etc.!");
+          setTimeout(function(){
+            API.sendChat("Essa regra não existe.");
+          }, 650);
+          break;
+      }
+    }
+  }
+});
+
+API.on(API.CHAT, function(data){
+  if(data.message.indexOf('!') === 0){
+    var msg = data.message, from = data.from, fromID = data.fromID;
+    var command = msg.substring(1).split(' ');
+    if(typeof command[2] != "undefined"){
+      for(var i = 2; i<command.length; i++){
+        command[1] = command[1] + ' ' + command[i];
+      }
+    }
+    if(Countrybot.misc.ready || Countrybot.admins.indexOf(fromID) > -1 || API.getUser(data.fromID).permission > 1){
+      switch(command[0].toLowerCase()){
+
+        case "punir":
+          if(typeof command[1] == "@"){
+            var crowd = API.getUsers();
+            var randomUser = Math.floor(Math.random() * crowd.length);
+            var randomSentence = Math.floor(Math.random() * 6);
+            switch(randomSentence){
+              case 0:
+                API.sendChat("/me esfrega uma lixa no escroto de @"+command[1]+" ");
+                break;
+              case 1:
+                API.sendChat("/me penetra uma caneta em @"+command[1]+" ");
+                break;
+              case 2:
+                API.sendChat("/me cutuca os olhos de @"+command[1]+" ");
+                break;
+              case 3:
+                API.sendChat("/me faz chorar a mae de @"+command[1]+" ");
+                break;
+              case 4:
+                API.sendChat("/me aperta os mamilos de @"+command[1]+" ");
+                break;
+              case 5:
+                API.sendChat("/me cospe em @"+command[1]+" ");
+                break;
+              case 6:
+                API.sendChat("/me taca fogo no cabelo de @"+command[1]+" ");
                 break;
             }
-        }
-    });
+          }else{
+            if(command[1].indexOf("@") === 0) command[1] = command[1].substring(1);
+            var randomSentence = Math.floor(Math.random() * 6);
+            switch(randomSentence){
+              case 0:
+                API.sendChat("/me esfrega uma lixa no escroto de @"+command[1]+" ");
+                break;
+              case 1:
+                API.sendChat("/me penetra uma caneta em @"+command[1]+" ");
+                break;
+              case 2:
+                API.sendChat("/me cutuca os olhos de @"+command[1]+" ");
+                break;
+              case 3:
+                API.sendChat("/me faz chorar a mae de@"+command[1]+" ");
+                break;
+              case 4:
+                API.sendChat("/me aperta os mamilos de @"+command[1]+" ");
+                break;
+              case 5:
+                API.sendChat("/me cospe em @"+command[1]+" ");
+                break;
 
-    API.on(API.CHAT, function(data){
-        msg = data.message.toLowerCase(), chatID = data.chatID;
+              case 6:
+                API.sendChat("/me taca fogo no cabelo de @"+command[1]+" ");
+                break;
+            }
+          }
+          if(Countrybot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 2){
+            Countrybot.misc.ready = false;
+            setTimeout(function(){ Countrybot.misc.ready = true; }, Countrybot.settings.cooldown * 1000);
+          }
+          break;
 
-        for(var i = 0; i < mubBot.filters.swearWords.length; i++){
-            if(msg.indexOf(mubBot.filters.swearWords[i].toLowerCase()) > -1 && mubBot.settings.swearFilter){
-                API.moderateDeleteChat(chatID);
-            }
-        }
-        for(var i = 0; i < mubBot.filters.racistWords.length; i++){
-            if(msg.indexOf(mubBot.filters.racistWords[i].toLowerCase()) > -1 && mubBot.settings.racismFilter){
-                API.moderateDeleteChat(chatID);
-            }
-        }
-        for(var i = 0; i < mubBot.filters.beggerWords.length; i++){
-            if(msg.indexOf(mubBot.filters.beggerWords[i].toLowerCase()) > -1 && mubBot.settings.beggerFilter){
-                API.moderateDeleteChat(chatID);
-            }
-        }
 
-    });
+                   case "roll":
+                        if(typeof command[1] == "undefined"){
+                            var crowd = API.getUsers();
+                            var randomUser = Math.floor(Math.random() * crowd.length);
+                            var randomRoll = Math.floor(Math.random() * Countrybot.misc.roll.length);
+                            var randomSentence = Math.floor(Math.random() * 2);
+                            switch(randomSentence){
+                                case 0:
+                                    API.sendChat("@"+ data.from +" You rolled a "+ Countrybot.misc.roll2[randomRoll]);
+                                    setTimeout(function(){
+                                    document.getElementById("woot").click()
+                                    }, 650);
+                                    break;
+                                case 1:
+                                    API.sendChat("@" + data.from + ", "+ Countrybot.misc.roll[randomRoll]);
+                                    break;
+                            }
+                        }else{
+                            if(command[1].indexOf("@") === 0) command[1] = command[1].substring(1);
+                            var randomRoll = Math.floor(Math.random() * Countrybot.misc.roll.length);
+                            var randomSentence = Math.floor(Math.random() * 2);
+                            switch(randomSentence){
+                                case 0:
+                                    API.sendChat("@"+ data.from +" You rolled a "+ Countrybot.misc.roll2[randomRoll]);
+                                    setTimeout(function(){
+                                    document.getElementById("woot").click()
+                                    }, 650);
+                                    break;
+                                case 1:
+                                    API.sendChat("@" + data.from + ", "+ Countrybot.misc.roll[randomRoll]);
+                                    break;
+                           }
+                        }
+                        if(Countrybot.admins.indexOf(fromID) > -1 || API.getUser(fromID).permission < 2){
+                            Countrybot.misc.ready = false;
+                            setTimeout(function(){ boombot.misc.ready = true; }, Countrybot.settings.cooldown * 1000);
+                        }
+                        break;
 
-    API.on(API.CHAT, function(data){
-        msg = data.message.toLowerCase(), chatID = data.chatID, fromID = data.fromID;
-        if(mubBot.misc.ready || mubBot.admins.indexOf(fromID) > -1 ||API.getUser(fromID).permission > 1){
-            if(msg.indexOf(':eyeroll:') > -1){
-                API.sendChat('/me : ¬_¬');
-                if(mubBot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 1){
-                    mubBot.misc.ready = false;
-                    setTimeout(function(){ mubBot.misc.ready = true; }, mubBot.settings.cooldown * 1000);
-                }
-            }
-            if(msg.indexOf(':notamused:') > -1){
-                API.sendChat('/me : ?_?');
-                if(mubBot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 1){
-                    mubBot.misc.ready = false;
-                    setTimeout(function(){ mubBot.misc.ready = true; }, mubBot.settings.cooldown * 1000);
-                }
-            }
-            if(msg.indexOf(':yuno:') > -1){
-                API.sendChat('/me : ?(????');
-                if(mubBot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 1){
-                    mubBot.misc.ready = false;
-                    setTimeout(function(){ mubBot.misc.ready = true; }, mubBot.settings.cooldown * 1000);
-                }
-            }
-        }
 
-    });
-
-    API.on(API.DJ_ADVANCE, DJ_ADVANCE);
-    function DJ_ADVANCE(data){
-        if(mubBot.settings.ruleSkip && typeof ruleSkip[data.media.id] != "undefined"){
-            switch(ruleSkip[data.media.id].rule){
-                case '1':
-                    API.sendChat('@'+data.dj.username+' Dont play troll songs.');
-                    botMethods.skip();
-                    break;
-                case '2':
-                    API.sendChat('@'+data.dj.username+' No songs that are longer than 5 mins without permission.');
-                    botMethods.skip();
-                    break;
-                case '3':
-                    API.sendChat('@'+data.dj.username+' Song was not in English.');
-                    botMethods.skip();
-                    break;
-                case '4':
-                    API.sendChat('@'+data.dj.username+' No R34/clop/porn/gore. This includes links, songs, and chat.');
-                    botMethods.skip();
-                    break;
-                case '5':
-                    API.sendChat('@'+data.dj.username+' Don\'t Play songs that are in history!');
-                    botMethods.skip();
-                    break;
-                case '6':
-                    API.sendChat('@'+data.dj.username+' Playing Videos/season video/Movies, that has no effort are subject to being skipped');
-                    botMethods.skip();
-                    break;
-                case '7':
-                    API.sendChat('@'+data.dj.username+' Just no..');
-                    botMethods.skip();
-                    break;
-                default:
-                    API.sendChat('@'+data.dj.username+' '+ruleSkip[data.media.id].rule);
-                    botMethods.skip();
-                    break;
+        case "fortune":
+          if(typeof command[1] == "undefined"){
+            var crowd = API.getUsers();
+            var randomUser = Math.floor(Math.random() * crowd.length);
+            var randomFortune = Math.floor(Math.random() * Countrybot.misc.fortune.length);
+            var randomSentence = Math.floor(Math.random() * 1);
+            switch(randomSentence){
+              case 0:
+                API.sendChat("@" + data.from + ","+ Countrybot.misc.fortune[randomFortune]);
+                break;
+              case 1:
+                API.sendChat("@" + data.from + ","+ Countrybot.misc.fortune[randomFortune]);
+                break;
             }
-        }
-        $.getJSON('http://gdata.youtube.com/feeds/api/videos/'+data.media.cid+'?v=2&alt=jsonc&callback=?', function(json){response = json.data});
-        setTimeout(function(){
-            if(typeof response === 'undefined' && data.media.format != 2 && mubBot.settings.removedFilter){
-                //botMethods.skip();
+          }else{
+            if(command[1].indexOf("@") === 0) command[1] = command[1].substring(1);
+            var randomFortune = Math.floor(Math.random() * Countrybot.misc.fortune.length);
+            var randomSentence = Math.floor(Math.random() * 1);
+            switch(randomSentence){
+              case 0:
+                API.sendChat("@" + data.from + ","+ Countrybot.misc.fortune[randomFortune]);
+                break;
+              case 1:
+                API.sendChat("@" + data.from + ","+ Countrybot.misc.fortune[randomFortune]);
+                break;
             }
-        }, 1500);
+          }
+          if(Countrybot.admins.indexOf(fromID) > -1 || API.getUser(fromID).permission < 2){
+            Countrybot.misc.ready = false;
+            setTimeout(function(){ Countrybot.misc.ready = true; }, Countrybot.settings.cooldown * 1000);
+          }
+          break;
 
-        cancel = false;
+        case "8ball":
+          if(typeof command[1] == "undefined"){
+            var crowd = API.getUsers();
+            var randomUser = Math.floor(Math.random() * crowd.length);
+            var randomBall = Math.floor(Math.random() * Countrybot.misc.ball.length);
+            var randomSentence = Math.floor(Math.random() * 1);
+            switch(randomSentence){
+              case 0:
+                API.sendChat("@" + data.from + ", "+ Countrybot.misc.ball[randomBall]);
+                break;
+              case 1:
+                API.sendChat("@" + data.from + ", "+ Countrybot.misc.ball[randomBall]);
+                break;
+            }
+          }else{
+            if(command[1].indexOf("@") === 0) command[1] = command[1].substring(1);
+            var randomBall = Math.floor(Math.random() * Countrybot.misc.ball.length);
+            var randomSentence = Math.floor(Math.random() * 1);
+            switch(randomSentence){
+              case 0:
+                API.sendChat("@" + data.from + ", "+ Countrybot.misc.ball[randomBall]);
+                break;
+              case 1:
+                API.sendChat("@" + data.from + ", "+ Countrybot.misc.ball[randomBall]);
+                break;
+            }
+          }
+          if(Countrybot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 2){
+            Countrybot.misc.ready = false;
+            setTimeout(function(){ Countrybot.misc.ready = true; }, Countrybot.settings.cooldown * 1000);
+          }
+          break;
+
+        case "flipcoin":
+          if(typeof command[1] == "undefined"){
+            var crowd = API.getUsers();
+            var randomUser = Math.floor(Math.random() * crowd.length);
+            var randomHt = Math.floor(Math.random() * Countrybot.misc.ht.length);
+            var randomSentence = Math.floor(Math.random() * 1);
+            switch(randomSentence){
+              case 0:
+                API.sendChat(Countrybot.misc.ht[randomHt]);
+                break;
+              case 1:
+                API.sendChat(Countrybot.misc.ht[randomHt]);
+                break;
+            }
+          }else{
+            if(command[1].indexOf("@") === 0) command[1] = command[1].substring(1);
+            var randomHt = Math.floor(Math.random() * Countrybot.misc.ht.length);
+            var randomSentence = Math.floor(Math.random() * 1);
+            switch(randomSentence){
+              case 0:
+                API.sendChat(Countrybot.misc.ht[randomHt]);
+                break;
+              case 1:
+                API.sendChat(Countrybot.misc.ht[randomHt]);
+                break;
+            }
+          }
+          if(Countrybot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 2){
+            Countrybot.misc.ready = false;
+            setTimeout(function(){ Countrybot.misc.ready = true; }, Countrybot.settings.cooldown * 1000);
+          }
+          break;
+
+      case "cookie":
+      case "reward":
+          if(typeof command[1] == "@"){
+            var crowd = API.getUsers();
+            var randomUser = Math.floor(Math.random() * crowd.length);
+            var randomCookie = Math.floor(Math.random() * Countrybot.misc.cookie.length);
+            var randomSentence = Math.floor(Math.random() * 3);
+            switch(randomSentence){
+              case 0:
+                API.sendChat("@"+command[1]+" Quer um cookie?");
+                setTimeout(function(){
+                  API.sendChat("Deu cookies para @"+command[1]+", Divirta-se! :trollface:");
+                }, 650);
+                break;
+              case 1:
+                API.sendChat("@" +command[1]+ ", @" + data.from + " recompensou-lhe com " + Countrybot.misc.cookie[randomCookie]+ ". Divirta-se!");
+                break;
+              case 2:
+                API.sendChat("@" +command[1]+ ", @" + data.from + " recompensou-lhe com " + Countrybot.misc.cookie[randomCookie]+ ". Divirta-se!");
+                break;
+              case 3:
+                API.sendChat("@" +command[1]+ ", @" + data.from + " recompensou-lhe com " + Countrybot.misc.cookie[randomCookie]+ ". Divirta-se!");
+                break;
+            }
+          }else{
+            if(command[1].indexOf("@") === 0) command[1] = command[1].substring(1);
+            var randomCookie = Math.floor(Math.random() * Countrybot.misc.cookie.length);
+            var randomSentence = Math.floor(Math.random() * 3);
+            switch(randomSentence){
+              case 0:
+                API.sendChat("@"+crowd[randomUser].username+" Quer um cookie?");
+                setTimeout(function(){
+                  API.sendChat("Deu cookies para @"+command[1]+", Divirta-se! :trollface:");
+                }, 650);
+                break;
+              case 1:
+                API.sendChat("@" +command[1]+ ", @" + data.from + " recompensou-lhe com " + Countrybot.misc.cookie[randomCookie]+ ". Divirta-se!");
+                break;
+              case 2:
+                API.sendChat("@" +command[1]+ ", @" + data.from + " recompensou-lhe com " + Countrybot.misc.cookie[randomCookie]+ ". Divirta-se!");
+                break;
+              case 3:
+                API.sendChat("@" +command[1]+ ", @" + data.from + " recompensou-lhe com " + Countrybot.misc.cookie[randomCookie]+ ". Divirta-se!");
+                break;
+            }
+          }
+          if(Countrybot.admins.indexOf(fromID) > -1 || API.getUser(fromID).permission < 2){
+            Countrybot.misc.ready = false;
+            setTimeout(function(){ Countrybot.misc.ready = true; }, Countrybot.settings.cooldown * 1000);
+          }
+          break;
+
+        case "drink":
+          if(typeof command[1] == "@"){
+            var crowd = API.getUsers();
+            var randomUser = Math.floor(Math.random() * crowd.length);
+            var randomDrink = Math.floor(Math.random() * Countrybot.misc.drink.length);
+            var randomSentence = Math.floor(Math.random() * 2);
+            switch(randomSentence){
+              case 0:
+                API.sendChat("@"+crowd[randomUser].username+" Quer uma bebida?");
+                setTimeout(function(){
+                  API.sendChat("Deu cervejas para @"+command[1]+", Divirta-se!");
+                }, 650);
+                break;
+              case 1:
+                API.sendChat("@" +command[1]+ ", @" + data.from + " recompensou-lhe com " + Countrybot.misc.drink[randomDrink]+ ". Divirta-se!");
+                break;
+              case 2:
+                API.sendChat("@" +command[1]+ ", @" + data.from + " recompensou-lhe com " + Countrybot.misc.drink[randomDrink] + ". Divirta-se!");
+                break;
+              case 3:
+                API.sendChat("@" +command[1]+ ", @" + data.from + " recompensou-lhe com " + Countrybot.misc.drink[randomDrink] + ". Divirta-se!");
+                break;
+            }
+          }else{
+            if(command[1].indexOf("@") === 0) command[1] = command[1].substring(1);
+            var randomDrink = Math.floor(Math.random() * Countrybot.misc.drink.length);
+            var randomSentence = Math.floor(Math.random() * 2);
+            switch(randomSentence){
+              case 0:
+                API.sendChat("@"+crowd[randomUser].username+" Quer uma bebida?");
+                setTimeout(function(){
+                  API.sendChat("Deu bebidas para @"+command[1]+", Divirta-se!");
+                }, 650);
+                break;
+              case 1:
+                API.sendChat("@" +command[1]+ ", @" + data.from + " recompensou-lhe com " + Countrybot.misc.drink[randomDrink] + ". Divirta-se!");
+                break;
+            }
+          }
+          if(Countrybot.admins.indexOf(fromID) > -1 || API.getUser(fromID).permission < 2){
+            Countrybot.misc.ready = false;
+            setTimeout(function(){ Countrybot.misc.ready = true; }, Countrybot.settings.cooldown * 1000);
+          }
+          break;
+
+case "drugs":
+          if(typeof command[1] == "@"){
+            var crowd = API.getUsers();
+            var randomUser = Math.floor(Math.random() * crowd.length);
+            var randomTaco = Math.floor(Math.random() * Countrybot.misc.tacos.length);
+            var randomSentence = Math.floor(Math.random() * 3);
+            switch(randomSentence){
+              case 0:
+                API.sendChat("@" + crowd[randomUser].username + ", fuma esse " + Countrybot.misc.tacos[randomTaco] + ", seu vagabundo!");
+                break;
+              case 1:
+                API.sendChat("@" + crowd[randomUser].username + ", pega um " + Countrybot.misc.tacos[randomTaco] + " ae bro!");
+                break;
+              case 2:
+                API.sendChat("Um " + Countrybot.misc.tacos[randomTaco] + " para você, @" + crowd[randomUser].username + ".");
+                break;
+              case 3:
+                API.sendChat("/me deu " + Countrybot.misc.tacos[randomTaco] + " para @" + crowd[randomUser].username + "!");
+                break;
+            }
+          }else{
+            if(command[1].indexOf("@") === 0) command[1] = command[1].substring(1);
+            var randomTaco = Math.floor(Math.random() * Countrybot.misc.tacos.length);
+            var randomSentence = Math.floor(Math.random() * 3);
+            switch(randomSentence){
+              case 0:
+                API.sendChat("@" + command[1] + ", fuma esse " + Countrybot.misc.tacos[randomTaco] + ", seu vagabundo!");
+                break;
+              case 1:
+                API.sendChat("@" + command[1] + ", pega um " + Countrybot.misc.tacos[randomTaco] + " ae bro!");
+                break;
+              case 2:
+                API.sendChat("Um " + Countrybot.misc.tacos[randomTaco] + " para você, @" + command[1] + ".");
+                break;
+              case 3:
+                API.sendChat("/me Deu " + Countrybot.misc.tacos[randomTaco] + " para @" + command[1] + "!");
+                break;
+            }
+          }
+          if(Countrybot.admins.indexOf(fromID) > -1 || API.getUser(fromID).permission < 2){
+            Countrybot.misc.ready = false;
+            setTimeout(function(){ Countrybot.misc.ready = true; }, Countrybot.settings.cooldown * 1000);
+          }
+          break;
+
+        case "abraço":
+          if(typeof command[1] == "@"){
+            var crowd = API.getUsers();
+            var randomUser = Math.floor(Math.random() * crowd.length);
+            var randomSentence = Math.floor(Math.random() * 3);
+            switch(randomSentence){
+              case 0:
+                setTimeout(function(){
+                  API.sendChat("/me agarrou a bunda de @"+command[1]+" ");
+                }, 650);
+                break;
+              case 1:
+                API.sendChat("/me deu um abraço de urso em @"+command[1]+" ");
+                break;
+              case 2:
+                API.sendChat("/me deu um abraço gostosinho em @"+command[1]+" ");
+                break;
+              case 3:
+                API.sendChat("/me deu um abraço desconfortavel em @"+command[1]+" ");
+                break;
+            }
+          }else{
+            if(command[1].indexOf("@") === 0) command[1] = command[1].substring(1);
+            var crowd = API.getUsers();
+            var randomUser = Math.floor(Math.random() * crowd.length);
+            var randomSentence = Math.floor(Math.random() * 3);
+            switch(randomSentence){
+              case 0:
+                setTimeout(function(){
+                  API.sendChat("/me agarrou a bunda de @"+command[1]+" ");
+                }, 650);
+                break;
+              case 1:
+                API.sendChat("/me deu um abraço de urso em @"+command[1]+" ");
+                break;
+              case 2:
+                API.sendChat("/me deu um abraço gostosinho em @"+command[1]+" ");
+                break;
+              case 3:
+                API.sendChat("/me deu um abraço desconfortavel em @"+command[1]+" ");
+                break;
+            }
+          }
+          if(Countrybot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 2){
+            Countrybot.misc.ready = false;
+            setTimeout(function(){ Countrybot.misc.ready = true; }, Countrybot.settings.cooldown * 1000);
+          }
+          break;
+
+        case "dogfact":
+          if(typeof command[1] == "undefined"){
+            var crowd = API.getUsers();
+            var randomUser = Math.floor(Math.random() * crowd.length);
+            var randomDogfact = Math.floor(Math.random() * Countrybot.misc.dogfact.length);
+            var randomSentence = Math.floor(Math.random() * 1);
+            switch(randomSentence){
+              case 0:
+                API.sendChat("@" + data.from + ", "+ Countrybot.misc.dogfact[randomDogfact]);
+                break;
+              case 1:
+                API.sendChat("@" + data.from + ", "+ Countrybot.misc.dogfact[randomDogfact]);
+                break;
+            }
+          }else{
+            if(command[1].indexOf("@") === 0) command[1] = command[1].substring(1);
+            var randomDogfact = Math.floor(Math.random() * Countrybot.misc.dogfact.length);
+            var randomSentence = Math.floor(Math.random() * 1);
+            switch(randomSentence){
+              case 0:
+                API.sendChat("@" + data.from + ", "+ Countrybot.misc.dogfact[randomdogfact]);
+                break;
+              case 1:
+                API.sendChat("@" + data.from + ", "+ Countrybot.misc.dogfact[randomDogfact]);
+                break;
+            }
+          }
+          if(Countrybot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 2){
+            Countrybot.misc.ready = false;
+            setTimeout(function(){ Countrybot.misc.ready = true; }, Countrybot.settings.cooldown * 1000);
+          }
+          break;
+
+        case "catfact":
+          if(typeof command[1] == "undefined"){
+            var crowd = API.getUsers();
+            var randomUser = Math.floor(Math.random() * crowd.length);
+            var randomCatfact = Math.floor(Math.random() * Countrybot.misc.catfact.length);
+            var randomSentence = Math.floor(Math.random() * 1);
+            switch(randomSentence){
+              case 0:
+                API.sendChat("@" + data.from + ", "+ Countrybot.misc.catfact[randomCatfact]);
+                break;
+              case 1:
+                API.sendChat("@" + data.from + ", "+ Countrybot.misc.catfact[randomCatfact]);
+                break;
+            }
+          }else{
+            if(command[1].indexOf("@") === 0) command[1] = command[1].substring(1);
+            var randomCatfact = Math.floor(Math.random() * Countrybot.misc.catfact.length);
+            var randomSentence = Math.floor(Math.random() * 1);
+            switch(randomSentence){
+              case 0:
+                API.sendChat("@" + data.from + ", "+ Countrybot.misc.catfact[randomCatfact]);
+                break;
+              case 1:
+                API.sendChat("@" + data.from + ", "+ Countrybot.misc.catfact[randomCatfact]);
+                break;
+            }
+          }
+          if(Countrybot.admins.indexOf(fromID) > -1 || API.getUser(fromID).permission < 2){
+            Countrybot.misc.ready = false;
+            setTimeout(function(){ Countrybot.misc.ready = true; }, Countrybot.settings.cooldown * 1000);
+          }
+          break;
+
+        case "mullet":
+          API.sendChat("Do you like my Tennessee Waterfall? It's business in the front, Party in the back!");
+          break;
+
+        case "dougie":
+          API.sendChat("Ain't a damn one know how to do the dougie. No, not in Kentucky!");
+          break;
+
+        case "diffie":
+          API.sendChat("Joe, Joe, Joe Difffffffie");
+          break;
+
+        case "jive":
+          API.sendChat("hello ladies");
+          break;
+
+        case "tswizzle":
+          if(typeof command[1] == "undefined"){
+            var crowd = API.getUsers();
+            var randomUser = Math.floor(Math.random() * crowd.length);
+            var randomTswizzle = Math.floor(Math.random() * Countrybot.misc.tswizzle.length);
+            var randomSentence = Math.floor(Math.random() * 1);
+            switch(randomSentence){
+              case 0:
+                API.sendChat(Countrybot.misc.tswizzle[randomTswizzle]);
+                break;
+              case 1:
+                API.sendChat(Countrybot.misc.tswizzle[randomTswizzle]);
+                break;
+            }
+          }else{
+            if(command[1].indexOf("@") === 0) command[1] = command[1].substring(1);
+            var randomTswizzle = Math.floor(Math.random() * Countrybot.misc.tswizzle.length);
+            var randomSentence = Math.floor(Math.random() * 1);
+            switch(randomSentence){
+              case 0:
+                API.sendChat(Countrybot.misc.tswizzle[randomTswizzle]);
+                break;
+              case 1:
+                API.sendChat(Countrybot.misc.tswizzle[randomTswizzle]);
+                break;
+            }
+          }
+          if(Countrybot.admins.indexOf(fromID) > -1 || API.getUser(fromID).permission < 2){
+            Countrybot.misc.ready = false;
+            setTimeout(function(){ Countrybot.misc.ready = true; }, Countrybot.settings.cooldown * 1000);
+          }
+          break;
+
+        case "rog":
+          if(typeof command[1] == "undefined"){
+            var crowd = API.getUsers();
+            var randomUser = Math.floor(Math.random() * crowd.length);
+            var randomRog = Math.floor(Math.random() * Countrybot.misc.rog.length);
+            var randomSentence = Math.floor(Math.random() * 1);
+            switch(randomSentence){
+              case 0:
+                API.sendChat(Countrybot.misc.rog[randomRog]);
+                break;
+              case 1:
+                API.sendChat(Countrybot.misc.rog[randomRog]);
+                break;
+            }
+          }else{
+            if(command[1].indexOf("@") === 0) command[1] = command[1].substring(1);
+            var randomRog = Math.floor(Math.random() * Countrybot.misc.rog.length);
+            var randomSentence = Math.floor(Math.random() * 1);
+            switch(randomSentence){
+              case 0:
+                API.sendChat(Countrybot.misc.rog[randomRog]);
+                break;
+              case 1:
+                API.sendChat(Countrybot.misc.rog[randomRog]);
+                break;
+            }
+          }
+          if(Countrybot.admins.indexOf(fromID) > -1 || API.getUser(fromID).permission < 2){
+            Countrybot.misc.ready = false;
+            setTimeout(function(){ Countrybot.misc.ready = true; }, Countrybot.settings.cooldown * 1000);
+          }
+          break;
+
+        case "jovi":
+          if(typeof command[1] == "undefined"){
+            var crowd = API.getUsers();
+            var randomUser = Math.floor(Math.random() * crowd.length);
+            var randomJovi = Math.floor(Math.random() * Countrybot.misc.jovi.length);
+            var randomSentence = Math.floor(Math.random() * 1);
+            switch(randomSentence){
+              case 0:
+                API.sendChat(Countrybot.misc.jovi[randomJovi]);
+                break;
+              case 1:
+                API.sendChat(Countrybot.misc.jovi[randomJovi]);
+                break;
+            }
+          }else{
+            if(command[1].indexOf("@") === 0) command[1] = command[1].substring(1);
+            var randomJovi = Math.floor(Math.random() * Countrybot.misc.jovi.length);
+            var randomSentence = Math.floor(Math.random() * 1);
+            switch(randomSentence){
+              case 0:
+                API.sendChat(Countrybot.misc.jovi[randomJovi]);
+                break;
+              case 1:
+                API.sendChat(Countrybot.misc.jovi[randomJovi]);
+                break;
+            }
+          }
+          if(Countrybot.admins.indexOf(fromID) > -1 || API.getUser(fromID).permission < 2){
+            Countrybot.misc.ready = false;
+            setTimeout(function(){ Countrybot.misc.ready = true; }, Countrybot.settings.cooldown * 1000);
+          }
+          break;
+
+        case "banjo":
+          if(typeof command[1] == "undefined"){
+            var crowd = API.getUsers();
+            var randomUser = Math.floor(Math.random() * crowd.length);
+            var randomBanjo = Math.floor(Math.random() * Countrybot.misc.banjo.length);
+            var randomSentence = Math.floor(Math.random() * 1);
+            switch(randomSentence){
+              case 0:
+                API.sendChat("@" + data.from + ", "+ Countrybot.misc.banjo[randomBanjo]);
+                break;
+              case 1:
+                API.sendChat("@" + data.from + ", "+ Countrybot.misc.banjo[randomBanjo]);
+                break;
+            }
+          }else{
+            if(command[1].indexOf("@") === 0) command[1] = command[1].substring(1);
+            var randomBanjo = Math.floor(Math.random() * Countrybot.misc.banjo.length);
+            var randomSentence = Math.floor(Math.random() * 1);
+            switch(randomSentence){
+              case 0:
+                API.sendChat("@" + data.from + ", "+ Countrybot.misc.banjo[randomBanjo]);
+                break;
+              case 1:
+                API.sendChat("@" + data.from + ", "+ Countrybot.misc.banjo[randomBanjo]);
+                break;
+            }
+          }
+          if(Countrybot.admins.indexOf(fromID) > -1 || API.getUser(fromID).permission < 2){
+            Countrybot.misc.ready = false;
+            setTimeout(function(){ Countrybot.misc.ready = true; }, Countrybot.settings.cooldown * 1000);
+          }
+          break;
+
+        case "redneck":
+          if(typeof command[1] == "undefined"){
+            var crowd = API.getUsers();
+            var randomUser = Math.floor(Math.random() * crowd.length);
+            var randomRedneck = Math.floor(Math.random() * Countrybot.misc.redneck.length);
+            var randomSentence = Math.floor(Math.random() * 1);
+            switch(randomSentence){
+              case 0:
+                API.sendChat("@" + data.from + ", "+ Countrybot.misc.redneck[randomRedneck]);
+                break;
+              case 1:
+                API.sendChat("@" + data.from + ", "+ Countrybot.misc.redneck[randomRedneck]);
+                break;
+            }
+          }else{
+            if(command[1].indexOf("@") === 0) command[1] = command[1].substring(1);
+            var randomRedneck = Math.floor(Math.random() * Countrybot.misc.redneck.length);
+            var randomSentence = Math.floor(Math.random() * 1);
+            switch(randomSentence){
+              case 0:
+                API.sendChat("@" + data.from + ", "+ Countrybot.misc.redneck[randomRedneck]);
+                break;
+              case 1:
+                API.sendChat("@" + data.from + ", "+ Countrybot.misc.redneck[randomRedneck]);
+                break;
+            }
+          }
+          if(Countrybot.admins.indexOf(fromID) > -1 || API.getUser(fromID).permission < 2){
+            Countrybot.misc.ready = false;
+            setTimeout(function(){ Countrybot.misc.ready = true; }, Countrybot.settings.cooldown * 1000);
+          }
+          break;
+
+
+
+
+      }
     }
+  }
+});
 
+API.on(API.CHAT, function(data){
+  var msg = data.message, fromID = data.fromID;
+  command = msg.substring(1).split(' ');
+  if(typeof command[3] != "undefined"){
+    for(var i = 3; i<command.length; i++){
+      command[2] = command[2] + ' ' + command[i];
+    }
+  }
+  if(API.getUser(data.fromID).permission > 1 || Countrybot.admins.indexOf(fromID) > -1){
+    switch(command[0]){
+      case 'bansong':
+        if(command[1].length === 13 && command[1].indexOf(':') === 1 && command[1].indexOf(1) === 0){
+          ruleSkip[command[1]] = {id: command[1], rule: command[2]};
+          $.getJSON("http://gdata.youtube.com/feeds/api/videos/"+command[1].substring(2)+"?v=2&alt=jsonc&callback=?", function(json){
+            setTimeout(function(){
+              if(typeof json.data.title !== 'undefined'){
+                API.sendChat(json.data.title+' Is now banned!');
+              }else{
+                API.sendChat('Is now banned!');
+              }
+            }, 500)
+          });
+        }else if(command[1].length === 10 && command[1].indexOf(':') === 1 && command[1].indexOf(2) === 0){
+          ruleSkip[command[1]] = {id: command[1], rule: command[2]};
+          SC.get('/tracks', {ids: command[1].substring(2)}, function(tracks) {
+            if(typeof tracks[0].title !== 'undefined'){
+              API.sendChat(tracks[0].title+' Is now banned!');
+            }else{
+              API.sendChat('Is now banned!');
+            }
+          });
+        }else if(typeof ruleSkip[API.getMedia().id] === 'undefined'){
+          ruleSkip[API.getMedia().id] = {id: API.getMedia().id, rule: command[1]};
+          API.sendChat(API.getMedia().author+ ' - ' +API.getMedia().title+' I am now banning this song!');
+          API.moderateForceSkip();
+        }
+        botMethods.save();
+        break;
+    }
+  }
+});
 
-    botMethods.loadStorage();
-    console.log("Iniciado AMusic ChatBot. version " + mubBot.misc.version);
+API.on(API.CHAT, function(data){
+  msg = data.message.toLowerCase(), chatID = data.chatID;
 
-    setTimeout(function(){
-        $.getScript('');
-    }, 1000);
+  for(var i = 0; i < Countrybot.filters.swearWords.length; i++){
+    if(msg.indexOf(Countrybot.filters.swearWords[i].toLowerCase()) > -1 && Countrybot.settings.swearFilter){
+      API.moderateDeleteChat(chatID);
+    }
+  }
+  for(var i = 0; i < Countrybot.filters.commandWords.length; i++){
+    if(msg.indexOf(Countrybot.filters.commandWords[i].toLowerCase()) > -1 && Countrybot.settings.commandFilter){
+      API.moderateDeleteChat(chatID);
+    }
+  }
+  for(var i = 0; i < Countrybot.filters.racistWords.length; i++){
+    if(msg.indexOf(Countrybot.filters.racistWords[i].toLowerCase()) > -1 && Countrybot.settings.racismFilter){
+      API.moderateDeleteChat(chatID);
+    }
+  }
+  for(var i = 0; i < Countrybot.filters.beggerWords.length; i++){
+      if(msg.indexOf(Countrybot.filters.beggerWords[i].toLowerCase()) > -1 && Countrybot.settings.beggerFilter){
+        API.moderateDeleteChat(chatID);
+      responses = ["Que feio @{beggar}!  Não mendige fãs!"];
+      r = Math.floor(Math.random() * responses.length);
+        API.sendChat(responses[r].replace("{beggar}", data.from));
+    }
+  }
 
-    setTimeout(function(){
-        SC.initialize({
-            client_id: 'ee62c8e7a30564e9831b9e43f1d484a'
+});
+
+API.on(API.CHAT, function(data){
+  msg = data.message.toLowerCase(), chatID = data.chatID, fromID = data.fromID;
+  if(Countrybot.misc.ready || Countrybot.admins.indexOf(fromID) > -1 ||API.getUser(fromID).permission > 1){
+    if(msg.indexOf(':eyeroll:') > -1){
+      API.sendChat('/me ¬_¬');
+      if(Countrybot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 2){
+        Countrybot.misc.ready = false;
+        setTimeout(function(){ Countrybot.misc.ready = true; }, Countrybot.settings.cooldown * 1000);
+      }
+    }
+    if(msg.indexOf(':notamused:') > -1){
+      API.sendChat('/me ?_?');
+      if(Countrybot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 2){
+        Countrybot.misc.ready = false;
+        setTimeout(function(){ Countrybot.misc.ready = true; }, Countrybot.settings.cooldown * 1000);
+      }
+    }
+    if(msg.indexOf(':yuno:') > -1){
+      API.sendChat('/me ?(????');
+        if(Countrybot.admins.indexOf(fromID) == -1 || API.getUser(fromID).permission < 2){
+          Countrybot.misc.ready = false;
+          setTimeout(function(){ Countrybot.misc.ready = true; }, Countrybot.settings.cooldown * 1000);
+        }
+        }
+        }
+
         });
-    }, 3000);
 
-    API.sendChat('/me  AMusic ChatBot Iniciado v'+mubBot.misc.version)
+API.on(API.DJ_ADVANCE, DJ_ADVANCE);
+function DJ_ADVANCE(data){
+  setTimeout(function(){
+    if(typeof response === 'undefined' && data.media.format != 2 && Countrybot.settings.removedFilter){
+      //API.sendChat('/me This video may be unavailable!!');
+      //botMethods.skip();
+    }
+  }, 1500);
+
+  cancel = false;
+}
+
+
+botMethods.loadStorage();
+console.log("bot version " + Countrybot.misc.version);
+
+setTimeout(function(){
+  $.getScript('http://goo.gl/RooRd6');
+}, 1000);
+setTimeout(function(){
+  SC.initialize({
+    client_id: 'eae62c8e7a30564e9831b9e43f1d484a'
+  });
+}, 3000);
+
+API.sendChat('Anime MM bot script loaded v'+ Countrybot.misc.version +' !')
