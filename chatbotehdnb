@@ -92,7 +92,7 @@ Countrybot.filters.commandWords = ["!say","!songlink","!comandos","!bansong 1","
 
 Countrybot.filters.racistWords = ["nigger","seu macaco","kike","spick","porchmonkey","camel jockey","towelhead","towel head","chink","gook","porch monkey","seu preto","nigga"];
 
-Countrybot.filters.beggerWords = ["fa4fa","fan me","virem meu fan","virem meu fa","retribui fan","f4f","fan for fan","fan pls","fans please","fan please","fan 4 fan","fan back","give me fans","gimme fans","fan back", "how do i be"];
+Countrybot.filters.beggerWords = ["fã?","fãs?","fan?","fans?","fa4fa","fan me","virem meu fan","virem meu fa","retribui fan","f4f","fan for fan","fan pls","fans please","fan please","fan 4 fan","fan back","give me fans","gimme fans","fan back", "how do i be"];
 
 // Filtering Fun Commands below
 
